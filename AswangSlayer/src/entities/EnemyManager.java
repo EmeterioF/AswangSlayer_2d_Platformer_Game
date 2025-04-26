@@ -57,7 +57,7 @@ public class EnemyManager {
                            SIGBIN_HEIGHT, null);
                 
                 // Draw hitbox for debugging
-                c.drawHitbox(g, xLvlOffset);
+//                c.drawHitbox(g, xLvlOffset);
             }
         }
     }

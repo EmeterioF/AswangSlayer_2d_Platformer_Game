@@ -161,7 +161,13 @@ public class Game implements Runnable{
 	}
 	
 	public static void changeGameState(Gamestate newState) {
-	    // First change the state
+		 // Stop any existing music BEFORE changing state
+	    if (Gamestate.state == Gamestate.PLAYING && newState != Gamestate.PLAYING) {
+	        // We're leaving the playing state - stop the game/level music
+	        AudioManager.stopMusic();
+	    }
+	    
+	    // Change the state
 	    Gamestate.state = newState;
 	    
 	    // Then play appropriate music based on the new state

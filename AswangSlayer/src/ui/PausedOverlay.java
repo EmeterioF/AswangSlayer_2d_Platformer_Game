@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import audio.AudioManager;
 import gameStates.Gamestate;
 import gameStates.Playing;
 import main.Game;
@@ -92,6 +93,7 @@ public class PausedOverlay {
 	        if (menuButton.isMousePressed()) {
 	            Gamestate.state = Gamestate.MENU;
 	            playing.unpauseGame();
+	            AudioManager.playMusic("res/audio/menu_bg.wav");
 	        }
 	    } else if (isIn(e, replayButton)) {
 	        if (replayButton.isMousePressed()) {
