@@ -97,4 +97,21 @@ public class AudioManager {
             sfx.stop();
         }
     }
+    
+    public static boolean isMusicMuted() {
+        return musicMuted;
+    }
+
+    public static boolean isSoundMuted() {
+        return soundMuted;
+    }
+
+    public static float getMusicVolume() {
+        return musicVolume;
+    }
+
+    public static float getSoundVolume() {
+        return soundVolume;
+    }
+    
 }

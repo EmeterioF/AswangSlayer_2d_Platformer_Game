@@ -56,10 +56,14 @@ public class Game implements Runnable{
     }
 
 	private void initClasses() {
-		audioOptions = new AudioOptions();
-		menu = new Menu(this);
-		playing = new Playing(this);
-		gameOptions = new GameOptions(this);
+	    // Initialize AudioManager with default values (if needed)
+	    AudioManager.setMusicVolume(0.5f); // 50% volume as default
+	    AudioManager.setSoundVolume(0.5f);
+	    
+	    audioOptions = new AudioOptions();
+	    menu = new Menu(this);
+	    playing = new Playing(this);
+	    gameOptions = new GameOptions(this);
 	}
 
 	private void startGameLoop() {

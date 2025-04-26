@@ -80,5 +80,22 @@ public class VolumeButton extends PausedButton{
 	public void setMousePressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}
+	
+	public int getButtonX() {
+	    return buttonX;
+	}
+
+	public int getMinX() {
+	    return minX;
+	}
+
+	public int getMaxX() {
+	    return maxX;
+	}
+
+	// Calculate and return the current volume value (0.0 to 1.0)
+	public float getVolumeValue() {
+	    return (float)(buttonX - minX) / (maxX - minX);
+	}
 
 }
