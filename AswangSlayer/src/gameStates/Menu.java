@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import audio.AudioManager;
 import main.Game;
 import ui.MenuButton;
 import utilz.LoadSave;
@@ -19,6 +20,8 @@ public class Menu extends State implements StateMethods {
 		super(game);
 		loadButtons();
 		loadBackground();
+		
+		AudioManager.playMusic("res/audio/menu_bg.wav");
 	}
 
 	private void loadBackground() {
@@ -71,14 +74,15 @@ public class Menu extends State implements StateMethods {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		for(MenuButton mb : buttons) {
-			if(isIn(e,mb)) {
-				if(mb.isMousePressed())
-					mb.applyGamestate();
-				break;
-			}
-		}		
-		resetButtons();
+	    for(MenuButton mb : buttons) {
+	        if(isIn(e,mb)) {
+	            if(mb.isMousePressed())
+	                // Use the game's changeGameState method instead of directly modifying state
+	                game.changeGameState(mb.getState());
+	            break;
+	        }
+	    }        
+	    resetButtons();
 	}
 
 	private void resetButtons() {

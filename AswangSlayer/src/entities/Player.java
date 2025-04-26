@@ -1,6 +1,8 @@
 package entities;
 
 import static utilz.Constants.PlayerConstants.*;
+
+import audio.AudioManager; 
 import static utilz.HelpMethods.*;
 
 import java.awt.Color;
@@ -99,6 +101,8 @@ public class Player extends Entity {
     private boolean attackChecked = false; // Flag to ensure we only apply damage once per attack
     private long lastAttackTime = 0; // For combo timing
     private long attackComboWindow = 800; // Time window in milliseconds to chain attacks (0.8 seconds)
+    
+    private boolean attackSoundPlayed = false;
     
     // Constructor
     public Player(float x, float y, int width, int height, Playing playing) {
@@ -282,19 +286,17 @@ public class Player extends Entity {
         playerAction = DASH;
         resetAniTick();
         
-        System.out.println("Dash initiated in direction: " + dashDir); // Debug
+        
+        AudioManager.playSFX("res/audio/dash.wav");
     }
     
     private void handleDashing() {
         // Calculate how far we've dashed so far
         float distanceDashed = Math.abs(hitbox.x - dashStartX);
         
-        System.out.println("Dashing - distance traveled: " + distanceDashed); // Debug
-        
         // Check if we've reached the dash distance
         if (distanceDashed >= dashDistance) {
             dashing = false;
-            System.out.println("Dash completed - reached max distance");
             return;
         }
         
@@ -308,7 +310,6 @@ public class Player extends Entity {
             // Hit a wall, stop dashing
             dashing = false;
             hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
-            System.out.println("Dash stopped - hit wall");
         }
         
         // We're definitely moving while dashing
@@ -440,6 +441,8 @@ public class Player extends Entity {
             return;
         inAir = true;
         airSpeed = jumpSpeed;
+        
+        AudioManager.playSFX("res/audio/jump.wav");
     }
     
     private void resetInAir() {
@@ -459,26 +462,58 @@ public class Player extends Entity {
     
     private void checkAttack() {
         // Only check attack once at the right frame of animation
-        if (attacking && !attackChecked) {
+        if (attacking) {
             // Different attacks have different "impact" frames
             boolean checkNow = false;
+            boolean playSound = false;
             
             switch (attackIndex) {
                 case 0: // First attack (quicker)
-                    if (aniIndex == 1) 
+                    if (aniIndex == 1) {
                         checkNow = true;
+                        if (!attackSoundPlayed) {
+                            playSound = true;
+                            attackSoundPlayed = true;
+                        }
+                    }
                     break;
                 case 1: // Second attack (mid point)
-                    if (aniIndex == 2) 
+                    if (aniIndex == 2) {
                         checkNow = true;
+                        if (!attackSoundPlayed) {
+                            playSound = true;
+                            attackSoundPlayed = true;
+                        }
+                    }
                     break;
                 case 2: // Third attack (heavy, later frames)
-                    if (aniIndex == 3) 
+                    if (aniIndex == 3) {
                         checkNow = true;
+                        if (!attackSoundPlayed) {
+                            playSound = true;
+                            attackSoundPlayed = true;
+                        }
+                    }
                     break;
             }
             
-            if (checkNow) {
+            // Play the sound if needed
+            if (playSound) {
+                switch (attackIndex) {
+                    case 0:
+                        AudioManager.playSFX("res/audio/attack_1.wav");
+                        break;
+                    case 1:
+                        AudioManager.playSFX("res/audio/attack_2.wav");
+                        break;
+                    case 2:
+                        AudioManager.playSFX("res/audio/attack_3.wav");
+                        break;
+                }
+            }
+            
+            // Check for damage if needed
+            if (checkNow && !attackChecked) {
                 // Apply different effects based on attack type
                 int damage = 1; // Default damage
                 switch (attackIndex) {
@@ -527,6 +562,8 @@ public class Player extends Entity {
                 invincible = true;
                 invincibilityTimer = 0;
                 
+                AudioManager.playSFX("res/audio/hit.wav");
+                
                 // Stop other actions
                 attacking = false;
                 dashing = false;
@@ -549,6 +586,8 @@ public class Player extends Entity {
                     playerAction = DEATH;
                     resetAniTick();
                     playing.setPlayerDying(true);
+                    
+                    AudioManager.playSFX("res/audio/death.wav");
                 }
             }
         } else if (value > 0) {
@@ -598,6 +637,19 @@ public class Player extends Entity {
                 attackIndex = (attackIndex + 1) % ATTACK_COUNT;
             } else {
                 attackIndex = 0;
+            }
+            
+            // Play attack sound based on the attack type
+            switch (attackIndex) {
+                case 0:
+                    AudioManager.playSFX("res/audio/attack_1.wav");
+                    break;
+                case 1:
+                    AudioManager.playSFX("res/audio/attack_2.wav");
+                    break;
+                case 2:
+                    AudioManager.playSFX("res/audio/attack_3.wav");
+                    break;
             }
             
             this.attacking = true;

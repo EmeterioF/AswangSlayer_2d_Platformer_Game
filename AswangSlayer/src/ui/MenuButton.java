@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import audio.AudioPlayer;
 import gameStates.Gamestate;
+import main.Game;
 import utilz.LoadSave;
 import static utilz.Constants.UI.Buttons.*;
 
@@ -15,7 +17,7 @@ public class MenuButton {
 	private BufferedImage[] imgs;
 	private boolean mouseOver, mousePressed;
 	private Rectangle bounds;
-
+	
 	public MenuButton(int xPos, int yPos, int rowIndex, Gamestate state) {
 		this.xPos = xPos;
 		this.yPos = yPos;
@@ -70,12 +72,17 @@ public class MenuButton {
 	}
 
 	public void applyGamestate() {
-		Gamestate.state = state;
+	    // Instead of directly setting Gamestate.state, use the game's method
+	    Game.changeGameState(state);
 	}
 
 	public void resetBools() {
 		mouseOver = false;
 		mousePressed = false;
+	}
+	
+	public Gamestate getState() {
+	    return state;
 	}
 
 }

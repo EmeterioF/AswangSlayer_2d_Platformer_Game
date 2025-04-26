@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Graphics;
 
+import audio.AudioManager;
 import audio.AudioPlayer;
 import gameStates.GameOptions;
 import gameStates.Gamestate;
@@ -39,15 +40,20 @@ public class Game implements Runnable{
 	
 	
 	public Game() {
-		initClasses();
-		
-		gamePanel = new GamePanel(this);
-		gameWindow = new GameWindow(gamePanel);
-		gamePanel.setFocusable(true);
-		gamePanel.requestFocus();
-		
-		startGameLoop();
-	}
+        initClasses();
+        
+        gamePanel = new GamePanel(this);
+        gameWindow = new GameWindow(gamePanel);
+        gamePanel.setFocusable(true);
+        gamePanel.requestFocus();
+        
+        // Play menu music on game start (since we typically start in the menu state)
+        if (Gamestate.state == Gamestate.MENU) {
+            AudioManager.playMusic("res/audio/menu_bg.wav");
+        }
+        
+        startGameLoop();
+    }
 
 	private void initClasses() {
 		audioOptions = new AudioOptions();
@@ -150,6 +156,30 @@ public class Game implements Runnable{
 		}
 	}
 	
+	public static void changeGameState(Gamestate newState) {
+	    // First change the state
+	    Gamestate.state = newState;
+	    
+	    // Then play appropriate music based on the new state
+	    switch(newState) {
+	        case MENU:
+	            AudioManager.playMusic("res/audio/menu_bg.wav");
+	            break;
+	        case PLAYING:
+	            AudioManager.playMusic("res/audio/boss_lvl_bg.wav"); // Or whatever playing music you have
+	            break;
+	        case OPTIONS:
+	            AudioManager.playMusic("res/audio/menu_bg.wav"); // Or specific options music
+	            break;
+	        case QUIT:
+	            // Stop all music when quitting
+	            AudioManager.stopMusic();
+	            break;
+	        default:
+	            break;
+	    }
+	}
+	
 	public Menu getMenu() {
 		return menu;
 	}
@@ -169,5 +199,7 @@ public class Game implements Runnable{
 	public AudioPlayer getAudioPlayer() {
 		return audioPlayer;
 	}
+	
+	
 	
 }

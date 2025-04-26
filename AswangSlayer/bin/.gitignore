@@ -1,12 +1,7 @@
-/audio/
-/button_atlas.png
-/death_background.png
 /entities/
 /gameStates/
 /inputs/
-/level_one_data_long.png
 /levels/
-/lvl_completed_background.png
 /lvls/
 /main/
 /menu_background.png
@@ -25,3 +20,4 @@
 /urm_buttons.png
 /utilz/
 /volume_buttons.png
+/audio/
