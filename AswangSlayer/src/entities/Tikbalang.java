@@ -45,6 +45,9 @@ public class Tikbalang extends Enemy {
     private int attackBoxOffsetX;
     private int specialAttackHitFrame = 10; // The animation frame when special attack hits
     
+    //music
+    private boolean playerSpotted = false;
+    
     public Tikbalang(float x, float y) {
         // Use TIKBALNG constant from EnemyConstants
         super(x, y -274, TIKBALANG_WIDTH, TIKBALANG_HEIGHT, TIKBALANG);
@@ -110,6 +113,22 @@ public class Tikbalang extends Enemy {
         // Update special attack box position (centered under boss)
         specialAttackBox.x = hitbox.x - (specialAttackBox.width - hitbox.width) / 2;
         specialAttackBox.y = hitbox.y + hitbox.height;
+    }
+    
+    @Override
+    protected boolean canSeePlayer(int[][] lvlData, Player player) {
+        // Use the parent method to check if player is visible
+        boolean canSee = super.canSeePlayer(lvlData, player);
+        
+        // If the boss sees the player for the first time, change the music
+        if (canSee && !playerSpotted) {
+            playerSpotted = true;
+            // Stop the current background music and play boss music
+            AudioManager.stopMusic();
+            AudioManager.playMusic("res/audio/boss_bg_music.wav");
+        }
+        
+        return canSee;
     }
     
     @Override
@@ -304,6 +323,10 @@ public class Tikbalang extends Enemy {
         if (currentHealth <= 0) {
             // Use TIKBALANG_DEAD instead of DEAD for Tikbalang
             newState(TIKBALANG_DEAD);
+            
+            // Boss is dead, stop boss music and go back to level music
+            AudioManager.stopMusic();
+            AudioManager.playMusic("res/audio/normal_lvl_music.wav"); // Change to your actual level music path
         }
     }
     
@@ -514,6 +537,9 @@ public class Tikbalang extends Enemy {
             changeWalkDir();
             lastDirectionChangeTime = System.currentTimeMillis();
         }
+        
+        
+        
     }
     
     // Draw debug info for development
@@ -585,5 +611,6 @@ public class Tikbalang extends Enemy {
         isDoingSpecialAttack = false;
         jumpingForSpecialAttack = false;
         lastSpecialAttackTime = 0;
+        playerSpotted = false; // Reset the player spotted flag
     }
 }
