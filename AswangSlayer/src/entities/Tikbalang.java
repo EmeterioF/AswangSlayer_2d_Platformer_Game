@@ -35,6 +35,7 @@ public class Tikbalang extends Enemy {
     private long minDirectionChangeDelay = 500; // milliseconds
     private int specialAttackCooldown = 6000; // 6 seconds cooldown
     private long lastSpecialAttackTime = 0;
+    private boolean specialAttackAnimComplete = false;
     
     // Attack boxes
     private Rectangle2D.Float attackBox;
@@ -84,22 +85,53 @@ public class Tikbalang extends Enemy {
     }
     
     private void updateAttackBoxes() {
-        // Update normal attack box position - position at the bottom of the Tikbalang
+        // Make attack box smaller and positioned inside the hitbox
+        float attackBoxWidth = hitbox.width * 0.8f; // 70% of hitbox width
+        float attackBoxHeight = hitbox.height * 0.6f; // 60% of hitbox height
+        
+        // Position attack box inside the hitbox
         if (walkDir == RIGHT) {
-            // Attack box on the right side
-            // Position it so it starts within the hitbox and extends outward
-            attackBox.x = hitbox.x + (hitbox.width / 2); // Start from middle of hitbox
-            attackBox.y = hitbox.y + (hitbox.height / 2); // Position at middle-bottom of the hitbox
+            // Place on right side of hitbox (but still inside)
+            attackBox.x = hitbox.x + (hitbox.width * 0.3f); // Start at 30% from left
         } else {
-            // Attack box on the left side
-            // Position it so it starts inside the hitbox and extends to the left
-            attackBox.x = hitbox.x - (attackBox.width / 2); // Offset to the left but still overlap
-            attackBox.y = hitbox.y + (hitbox.height / 2); // Position at middle-bottom of the hitbox
+            // Place on left side of hitbox (but still inside)
+            attackBox.x = hitbox.x;
         }
         
+        // Set width and height
+        attackBox.width = attackBoxWidth;
+        attackBox.height = attackBoxHeight;
+        
+        // Center it vertically within the hitbox
+        attackBox.y = hitbox.y + (hitbox.height - attackBox.height) / 2;
+        
         // Update special attack box position (centered under boss)
-        specialAttackBox.x = hitbox.x - specialAttackBox.width/2 + hitbox.width/2;
+        specialAttackBox.x = hitbox.x - (specialAttackBox.width - hitbox.width) / 2;
         specialAttackBox.y = hitbox.y + hitbox.height;
+    }
+    
+    @Override
+    protected boolean isPlayerCloseForAttack(Player player) {
+        // Get player and Tikbalang positions
+        float playerLeft = player.getHitbox().x;
+        float playerRight = playerLeft + player.getHitbox().width;
+        float bossLeft = hitbox.x;
+        float bossRight = bossLeft + hitbox.width;
+
+        // Check if player is within attack range horizontally
+        boolean inHorizontalRange = (playerRight >= bossLeft && playerLeft <= bossRight);
+
+        // Check if player is vertically aligned within attack range
+        float playerY = player.getHitbox().y;
+        float playerHeight = player.getHitbox().height;
+        float playerBottom = playerY + playerHeight;
+        float bossTop = hitbox.y;
+        float bossBottom = bossTop + hitbox.height;
+
+        boolean inVerticalRange = (playerBottom >= bossTop && playerY <= bossBottom);
+
+        // Return true only if player is both horizontally and vertically within attack range
+        return inHorizontalRange && inVerticalRange;
     }
     
     private void updateBehavior(int[][] lvlData, Player player) {
@@ -161,10 +193,10 @@ public class Tikbalang extends Enemy {
                 
                 // The actual damage check happens in handleSpecialAttackJump
                 break;
-            case HIT:
+            case TIKBALANG_HIT:
                 // No movement when hit
                 break;
-            case DEAD:
+            case TIKBALANG_DEAD:
                 // No movement when dead
                 break;
         }
@@ -173,14 +205,63 @@ public class Tikbalang extends Enemy {
         updateBossBehaviorState(player);
     }
     
+    @Override
+    protected void updateAnimationTick() {
+        aniTick++;
+        if (aniTick >= aniSpeed) {
+            aniTick = 0;
+            
+            // Special handling for special attack animation
+            if (enemyState == SPECIAL_ATTACK) {
+                if (!specialAttackAnimComplete) {
+                    aniIndex++;
+                    if (aniIndex >= GetSpriteAmount(enemyType, enemyState)) {
+                        // Instead of resetting animation, mark it as complete and freeze at last frame
+                        specialAttackAnimComplete = true;
+                        aniIndex = GetSpriteAmount(enemyType, enemyState) - 1; // Stay on last frame
+                    }
+                }
+                // If animation is complete, don't increment the index - freeze on last frame
+            } 
+            // Regular animation handling for other states
+            else {
+                aniIndex++;
+                if (aniIndex >= GetSpriteAmount(enemyType, enemyState)) {
+                    // For death animation, we want to stay on the last frame
+                    if (enemyState == DEAD || enemyState == TIKBALANG_DEAD) {
+                        aniIndex = GetSpriteAmount(enemyType, enemyState) - 1;
+                        active = false;  // Deactivate when death animation completes
+                    } 
+                    // For hit animation, go back to running once done
+                    else if (enemyState == HIT || enemyState == TIKBALANG_HIT) {
+                        aniIndex = 0;
+                        newState(RUNNING);
+                    } 
+                    // For attack animation, go back to running after attack completes
+                    else if (enemyState == ATTACK) {
+                        aniIndex = 0;
+                        newState(RUNNING);
+                    } 
+                    // For other states like IDLE and RUNNING, loop the animation
+                    else {
+                        aniIndex = 0;
+                    }
+                }
+            }
+        }
+    }
+    
     private boolean canDoSpecialAttack() {
         long currentTime = System.currentTimeMillis();
         return currentTime - lastSpecialAttackTime >= specialAttackCooldown;
     }
     
+    
+    
     private void startSpecialAttack() {
         isDoingSpecialAttack = true;
         newState(SPECIAL_ATTACK);
+        specialAttackAnimComplete = false; // Reset animation completion flag
         lastSpecialAttackTime = System.currentTimeMillis();
         
         // Make sure we're on the ground exactly when starting
@@ -192,6 +273,22 @@ public class Tikbalang extends Enemy {
         
         // Play special attack sound
         AudioManager.playSFX("res/audio/boss_special.wav");
+    }
+    
+    @Override
+    public void hurt(int amount) {
+        currentHealth -= amount;
+        
+        // If already in hit state or dead, don't reset animation
+        if (enemyState != TIKBALANG_HIT && enemyState != TIKBALANG_DEAD) {
+            // Use TIKBALANG_HIT instead of HIT for Tikbalang
+            newState(TIKBALANG_HIT);
+        }
+        
+        if (currentHealth <= 0) {
+            // Use TIKBALANG_DEAD instead of DEAD for Tikbalang
+            newState(TIKBALANG_DEAD);
+        }
     }
     
     private void handleSpecialAttackJump(int[][] lvlData, Player player) {
@@ -240,6 +337,7 @@ public class Tikbalang extends Enemy {
                 // Return to running state after special attack
                 newState(RUNNING);
                 isDoingSpecialAttack = false;
+                specialAttackAnimComplete = false; // Reset animation flag
             }
         }
     }
@@ -308,7 +406,7 @@ public class Tikbalang extends Enemy {
             bossBehaviorState = STATE_SPECIAL_ATTACK;
             
             // Occasionally use special attack when in range
-            if (Math.random() < 0.01) { // 1% chance per frame when in range
+            if (Math.random() < 0.001) { // 1% chance per frame when in range
                 startSpecialAttack();
             }
         }

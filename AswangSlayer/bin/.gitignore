@@ -1,4 +1,3 @@
-/entities/
 /gameStates/
 /inputs/
 /levels/
@@ -19,6 +18,6 @@
 /tikbalang_atlas.png
 /ui/
 /urm_buttons.png
-/utilz/
 /volume_buttons.png
-/audio/
+/entities/
+/utilz/

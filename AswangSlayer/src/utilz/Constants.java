@@ -93,7 +93,13 @@ public class Constants {
 		public static final int ATTACK = 2;
 		public static final int HIT = 3;
 		public static final int DEAD = 4;
-		public static final int SPECIAL_ATTACK = 5;
+		
+		//states for Tikbalang 
+		
+		public static final int SPECIAL_ATTACK = 3;
+		public static final int TIKBALANG_HIT = 4;		
+		public static final int TIKBALANG_DEAD = 5;
+		
 		
 		//size and pos for SIGBIN
 		public static final int WIDTH_DEFAULT = 256;
@@ -127,8 +133,8 @@ public class Constants {
 			case TIKBALANG:
 	            switch(enemy_state) {
 	                case IDLE: 
-	                case HIT: 
-	                case DEAD: 
+	                case TIKBALANG_HIT: 
+	                case TIKBALANG_DEAD: 
 	                case RUNNING: return 30;
 	                case ATTACK: return 32;
 	                case SPECIAL_ATTACK: return 29;
