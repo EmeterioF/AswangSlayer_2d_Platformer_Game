@@ -29,6 +29,8 @@ public class Tikbalang extends Enemy {
     private boolean jumpingForSpecialAttack = false;
     private float specialAttackDistance = Game.TILES_SIZE * 5f; // Longer range for special attack
     private boolean specialAttackChecked = false;
+    private float specialAttackTargetX;
+    private float horizontalJumpSpeed;
     
     // Timers
     private long lastDirectionChangeTime = 0;
@@ -162,7 +164,7 @@ public class Tikbalang extends Enemy {
                 
                 // Check for attack opportunities
                 if (isPlayerCloseForSpecialAttack(player) && canDoSpecialAttack())
-                    startSpecialAttack();
+                    startSpecialAttack(player);
                 else if (isPlayerCloseForAttack(player))
                     newState(ATTACK);
                 
@@ -227,16 +229,16 @@ public class Tikbalang extends Enemy {
             else {
                 aniIndex++;
                 if (aniIndex >= GetSpriteAmount(enemyType, enemyState)) {
-                    // For death animation, we want to stay on the last frame
-                    if (enemyState == DEAD || enemyState == TIKBALANG_DEAD) {
-                        aniIndex = GetSpriteAmount(enemyType, enemyState) - 1;
-                        active = false;  // Deactivate when death animation completes
-                    } 
-                    // For hit animation, go back to running once done
-                    else if (enemyState == HIT || enemyState == TIKBALANG_HIT) {
-                        aniIndex = 0;
-                        newState(RUNNING);
-                    } 
+                	// For death animation, we want to stay on the last frame
+                	if (enemyState == TIKBALANG_DEAD) {
+                	    aniIndex = GetSpriteAmount(enemyType, enemyState) - 1;
+                	    active = false;  // Deactivate when death animation completes
+                	} 
+                	// For hit animation, go back to running once done
+                	else if (enemyState == TIKBALANG_HIT) {
+                	    aniIndex = 0;
+                	    newState(RUNNING);
+                	}
                     // For attack animation, go back to running after attack completes
                     else if (enemyState == ATTACK) {
                         aniIndex = 0;
@@ -258,11 +260,25 @@ public class Tikbalang extends Enemy {
     
     
     
-    private void startSpecialAttack() {
+    private void startSpecialAttack(Player player) {
         isDoingSpecialAttack = true;
         newState(SPECIAL_ATTACK);
         specialAttackAnimComplete = false; // Reset animation completion flag
         lastSpecialAttackTime = System.currentTimeMillis();
+        
+        // Calculate target X position (the player's position)
+        specialAttackTargetX = player.getHitbox().x;
+        
+        // Calculate horizontal jump speed based on distance to player
+        float distanceX = specialAttackTargetX - hitbox.x;
+        float jumpDuration = 1.0f; // estimated seconds the jump will take
+        horizontalJumpSpeed = distanceX / (jumpDuration * 60); // 60 frames per second approx.
+        
+        // Cap the horizontal speed to a reasonable value
+        float maxHorizontalSpeed = 1.02f * Game.SCALE;
+        if (Math.abs(horizontalJumpSpeed) > maxHorizontalSpeed) {
+            horizontalJumpSpeed = Math.signum(horizontalJumpSpeed) * maxHorizontalSpeed;
+        }
         
         // Make sure we're on the ground exactly when starting
         if (!inAir) {
@@ -294,12 +310,29 @@ public class Tikbalang extends Enemy {
     private void handleSpecialAttackJump(int[][] lvlData, Player player) {
         // Going up phase
         if (fallSpeed < 0) {
-            if (CanMoveHere(hitbox.x, hitbox.y + fallSpeed, hitbox.width, hitbox.height, lvlData)) {
-                hitbox.y += fallSpeed;
+            // Try to move both horizontally and vertically
+            float nextX = hitbox.x + horizontalJumpSpeed;
+            float nextY = hitbox.y + fallSpeed;
+            
+            // Check if we can move to the new position
+            if (CanMoveHere(nextX, nextY, hitbox.width, hitbox.height, lvlData)) {
+                hitbox.x = nextX;
+                hitbox.y = nextY;
                 fallSpeed += GRAVITY;
             } else {
-                // Hit ceiling, reverse direction
-                fallSpeed = 0;
+                // Check if we can move just vertically
+                if (CanMoveHere(hitbox.x, nextY, hitbox.width, hitbox.height, lvlData)) {
+                    hitbox.y = nextY;
+                    fallSpeed += GRAVITY;
+                } else {
+                    // Hit ceiling, reverse direction
+                    fallSpeed = 0;
+                }
+                
+                // If we hit a wall, stop horizontal movement
+                if (!CanMoveHere(nextX, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+                    horizontalJumpSpeed = 0;
+                }
             }
         } 
         // Coming down phase
@@ -307,22 +340,33 @@ public class Tikbalang extends Enemy {
             // Fall faster during special attack for dramatic effect
             fallSpeed += GRAVITY * 1.5f;
             
-            // Check if we can move down
-            if (CanMoveHere(hitbox.x, hitbox.y + fallSpeed, hitbox.width, hitbox.height, lvlData)) {
-                hitbox.y += fallSpeed;
+            // Try to move both horizontally and vertically
+            float nextX = hitbox.x + horizontalJumpSpeed;
+            float nextY = hitbox.y + fallSpeed;
+            
+            // First check if we can move horizontally
+            boolean canMoveHorizontally = CanMoveHere(nextX, hitbox.y, hitbox.width, hitbox.height, lvlData);
+            if (canMoveHorizontally) {
+                hitbox.x = nextX;
+            } else {
+                // Hit a wall, stop horizontal movement
+                horizontalJumpSpeed = 0;
+            }
+            
+            // Then check if we can move vertically
+            if (CanMoveHere(hitbox.x, nextY, hitbox.width, hitbox.height, lvlData)) {
+                hitbox.y = nextY;
             } else {
                 // We've hit the ground!
                 
-                // IMPROVED FIX - Find the exact ground position and add a small offset
-                // Get the row of the tile we're colliding with
+                // Find the exact ground position and add a small offset
                 int maxTileY = (int)((hitbox.y + hitbox.height + fallSpeed) / Game.TILES_SIZE);
-                
-                // Position the hitbox exactly at the top of this tile, with a small offset to prevent embedding
                 hitbox.y = maxTileY * Game.TILES_SIZE - hitbox.height - 1; // Add a 1-pixel offset
                 
                 // Reset air state
                 inAir = false;
                 fallSpeed = 0;
+                horizontalJumpSpeed = 0;
                 jumpingForSpecialAttack = false;
                 
                 // Create ground impact effect
@@ -391,7 +435,7 @@ public class Tikbalang extends Enemy {
     
     private void updateBossBehaviorState(Player player) {
         // Don't change state if hit, dead, or doing special attack
-        if (enemyState == HIT || enemyState == DEAD || isDoingSpecialAttack)
+        if (enemyState == TIKBALANG_HIT || enemyState == TIKBALANG_DEAD || isDoingSpecialAttack)
             return;
             
         // Calculate player distance
@@ -406,8 +450,8 @@ public class Tikbalang extends Enemy {
             bossBehaviorState = STATE_SPECIAL_ATTACK;
             
             // Occasionally use special attack when in range
-            if (Math.random() < 0.001) { // 1% chance per frame when in range
-                startSpecialAttack();
+            if (Math.random() < 0.8) { // 1% chance per frame when in range
+                startSpecialAttack(player);
             }
         }
         else if (playerDistX < 400 * Game.SCALE) {
