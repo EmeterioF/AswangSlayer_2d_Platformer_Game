@@ -33,7 +33,7 @@ public class Tikbalang extends Enemy {
     // Timers
     private long lastDirectionChangeTime = 0;
     private long minDirectionChangeDelay = 500; // milliseconds
-    private int specialAttackCooldown = 3000; // 3 seconds cooldown
+    private int specialAttackCooldown = 6000; // 6 seconds cooldown
     private long lastSpecialAttackTime = 0;
     
     // Attack boxes
@@ -44,14 +44,14 @@ public class Tikbalang extends Enemy {
     
     public Tikbalang(float x, float y) {
         // Use TIKBALNG constant from EnemyConstants
-        super(x, y - 80, TIKBALANG_WIDTH, TIKBALANG_HEIGHT, TIKBALANG);
+        super(x, y-274, TIKBALANG_WIDTH, TIKBALANG_HEIGHT, TIKBALANG);
         
         // Make hitbox smaller than sprite for better gameplay
-        float hitboxWidth = TIKBALANG_WIDTH * 0.45f;
-        float hitboxHeight = TIKBALANG_HEIGHT * 0.28f;
+        float hitboxWidth = TIKBALANG_WIDTH * 0.32f;
+        float hitboxHeight = TIKBALANG_HEIGHT * 0.30f;
         float hitboxX = x + (TIKBALANG_WIDTH/2) - (hitboxWidth/2);
         
-        initHitbox(hitboxX, y - 80, (int)hitboxWidth, (int)hitboxHeight);
+        initHitbox(hitboxX, y -274, (int)hitboxWidth, (int)hitboxHeight);
         
         // Initialize attack boxes
         initAttackBoxes();

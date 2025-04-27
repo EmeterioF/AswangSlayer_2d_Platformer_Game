@@ -6,8 +6,9 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
+import static utilz.Constants.EnemyConstants.TIKBALANG;
 import entities.Sigbin;
+import entities.Tikbalang;
 import main.Game;
 
 public class HelpMethods {
@@ -189,4 +190,16 @@ public class HelpMethods {
 	        }
 	    return list;
 	}
+    
+    public static ArrayList<Tikbalang> GetTikbalang(BufferedImage img) {
+        ArrayList<Tikbalang> list = new ArrayList<>();
+        for (int j = 0; j < img.getHeight(); j++)
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == TIKBALANG)
+                    list.add(new Tikbalang(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+            }
+        return list;
+    }
 }

@@ -110,7 +110,7 @@ public class Constants {
 		public static final int TIKBALANG_HEIGHT = (int) ((HEIGHT_DEFAULT * 2) * Game.SCALE);
 		
 		public static final int TIKBALANG_DRAWOFFSET_X = (int) (180 * Game.SCALE);
-		public static final int TIKBALANG_DRAWOFFSET_Y = (int) (136 * Game.SCALE);  // sprite pos relative to hitbox + to move down - to move up
+		public static final int TIKBALANG_DRAWOFFSET_Y = (int) (114 * Game.SCALE);  // sprite pos relative to hitbox + to move down - to move up
 		
 		
 		public static int GetSpriteAmount(int enemy_type, int enemy_state) {
