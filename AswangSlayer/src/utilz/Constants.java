@@ -85,7 +85,7 @@ public class Constants {
 	public static class EnemyConstants{
 		// this values will be used as the color of the green 
 		public static final int SIGBIN = 16; 
-		public static final int TIKBALNG = 32;
+		public static final int TIKBALANG = 32;
 		
 		// states for enemies
 		public static final int IDLE = 0;
@@ -106,11 +106,11 @@ public class Constants {
 		public static final int SIGBIN_DRAWOFFSET_Y = (int) (68 * Game.SCALE);  // sprite pos relative to hitbox + to move down - to move up
 		
 		//size and pos for TIKBALANG
-		public static final int TIKBALANG_WIDTH = (int) (WIDTH_DEFAULT * Game.SCALE);
-		public static final int TIKBALANG_HEIGHT = (int) (HEIGHT_DEFAULT * Game.SCALE);
+		public static final int TIKBALANG_WIDTH = (int) ((WIDTH_DEFAULT * 2) * Game.SCALE);
+		public static final int TIKBALANG_HEIGHT = (int) ((HEIGHT_DEFAULT * 2) * Game.SCALE);
 		
-		public static final int TIKBALANG_DRAWOFFSET_X = (int) (90 * Game.SCALE);
-		public static final int TIKBALANG_DRAWOFFSET_Y = (int) (68 * Game.SCALE);  // sprite pos relative to hitbox + to move down - to move up
+		public static final int TIKBALANG_DRAWOFFSET_X = (int) (180 * Game.SCALE);
+		public static final int TIKBALANG_DRAWOFFSET_Y = (int) (136 * Game.SCALE);  // sprite pos relative to hitbox + to move down - to move up
 		
 		
 		public static int GetSpriteAmount(int enemy_type, int enemy_state) {
@@ -124,6 +124,15 @@ public class Constants {
 					case IDLE : 
 					case DEAD: return 30;
 				}
+			case TIKBALANG:
+	            switch(enemy_state) {
+	                case IDLE: 
+	                case HIT: 
+	                case DEAD: 
+	                case RUNNING: return 30;
+	                case ATTACK: return 32;
+	                case SPRCIAL_ATTACK: return 29;
+	            }
 			}
 			return 0;
 		}
@@ -131,14 +140,16 @@ public class Constants {
 		public static int GetMaxHealth(int enemy_type) {
 				switch(enemy_type) {
 					case SIGBIN : return 50;
+					case TIKBALANG: return 300;
 					default : return 1;
 				}
 		}
 		
 		public static int GetEnemyDmg(int enemy_type) {
 			switch(enemy_type) {
-				case SIGBIN : return 10;
-				default : return 1;
+				case SIGBIN: return 10;
+				case TIKBALANG: return 25; // Boss deals more damage
+				default: return 1;
 			}
 	}
 	

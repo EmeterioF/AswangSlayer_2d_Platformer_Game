@@ -21,6 +21,8 @@ public class LoadSave {
 	
 	// enemy sprites
 	public static final String SIGBIN_ATLAS = "sigbin_atlas.png";
+	public static final String TIKBALANG_ATLAS = "tikbalang_atlas.png";
+	
 	
 	// level sprites
 	public static final String LEVEL_ATLAS = "outside_sprites.png";
