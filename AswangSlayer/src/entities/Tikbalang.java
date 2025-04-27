@@ -44,14 +44,14 @@ public class Tikbalang extends Enemy {
     
     public Tikbalang(float x, float y) {
         // Use TIKBALNG constant from EnemyConstants
-        super(x, y-274, TIKBALANG_WIDTH, TIKBALANG_HEIGHT, TIKBALANG);
+        super(x, y -274, TIKBALANG_WIDTH, TIKBALANG_HEIGHT, TIKBALANG);
         
         // Make hitbox smaller than sprite for better gameplay
         float hitboxWidth = TIKBALANG_WIDTH * 0.32f;
         float hitboxHeight = TIKBALANG_HEIGHT * 0.30f;
         float hitboxX = x + (TIKBALANG_WIDTH/2) - (hitboxWidth/2);
         
-        initHitbox(hitboxX, y -274, (int)hitboxWidth, (int)hitboxHeight);
+        initHitbox(hitboxX, y -274 , (int)hitboxWidth, (int)hitboxHeight);
         
         // Initialize attack boxes
         initAttackBoxes();
@@ -65,9 +65,8 @@ public class Tikbalang extends Enemy {
     }
     
     private void initAttackBoxes() {
-        // Normal attack box
-        attackBox = new Rectangle2D.Float(x, y, (int)(120 * Game.SCALE), (int)(70 * Game.SCALE));
-        attackBoxOffsetX = (int)(Game.SCALE * 40);
+        // Normal attack box - make it smaller and more focused
+        attackBox = new Rectangle2D.Float(x, y, (int)(80 * Game.SCALE), (int)(40 * Game.SCALE));
         
         // Special attack box is larger and positioned below the boss
         specialAttackBox = new Rectangle2D.Float(x, y, (int)(200 * Game.SCALE), (int)(50 * Game.SCALE));
@@ -85,9 +84,18 @@ public class Tikbalang extends Enemy {
     }
     
     private void updateAttackBoxes() {
-        // Update normal attack box position
-        attackBox.x = hitbox.x - attackBoxOffsetX;
-        attackBox.y = hitbox.y;
+        // Update normal attack box position - position at the bottom of the Tikbalang
+        if (walkDir == RIGHT) {
+            // Attack box on the right side
+            // Position it so it starts within the hitbox and extends outward
+            attackBox.x = hitbox.x + (hitbox.width / 2); // Start from middle of hitbox
+            attackBox.y = hitbox.y + (hitbox.height / 2); // Position at middle-bottom of the hitbox
+        } else {
+            // Attack box on the left side
+            // Position it so it starts inside the hitbox and extends to the left
+            attackBox.x = hitbox.x - (attackBox.width / 2); // Offset to the left but still overlap
+            attackBox.y = hitbox.y + (hitbox.height / 2); // Position at middle-bottom of the hitbox
+        }
         
         // Update special attack box position (centered under boss)
         specialAttackBox.x = hitbox.x - specialAttackBox.width/2 + hitbox.width/2;
@@ -137,13 +145,13 @@ public class Tikbalang extends Enemy {
                     attackChecked = false;
                 
                 // Check for player hit at specific animation frame
-                if (aniIndex == 15 && !attackChecked) {
+                if (aniIndex == 28 && !attackChecked) {
                     checkPlayerHit(attackBox, player);
                     // Play attack sound
                     AudioManager.playSFX("res/audio/boss_attack.wav");
                 }
                 break;
-            case SPRCIAL_ATTACK:
+            case SPECIAL_ATTACK:
                 if (aniIndex == 0) {
                     specialAttackChecked = false;
                     jumpingForSpecialAttack = true;
@@ -172,8 +180,15 @@ public class Tikbalang extends Enemy {
     
     private void startSpecialAttack() {
         isDoingSpecialAttack = true;
-        newState(SPRCIAL_ATTACK);
+        newState(SPECIAL_ATTACK);
         lastSpecialAttackTime = System.currentTimeMillis();
+        
+        // Make sure we're on the ground exactly when starting
+        if (!inAir) {
+            // Ensure proper ground alignment before jumping
+            int tileY = (int) ((hitbox.y + hitbox.height) / Game.TILES_SIZE);
+            hitbox.y = tileY * Game.TILES_SIZE - hitbox.height;
+        }
         
         // Play special attack sound
         AudioManager.playSFX("res/audio/boss_special.wav");
@@ -200,8 +215,16 @@ public class Tikbalang extends Enemy {
                 hitbox.y += fallSpeed;
             } else {
                 // We've hit the ground!
+                
+                // IMPROVED FIX - Find the exact ground position and add a small offset
+                // Get the row of the tile we're colliding with
+                int maxTileY = (int)((hitbox.y + hitbox.height + fallSpeed) / Game.TILES_SIZE);
+                
+                // Position the hitbox exactly at the top of this tile, with a small offset to prevent embedding
+                hitbox.y = maxTileY * Game.TILES_SIZE - hitbox.height - 1; // Add a 1-pixel offset
+                
+                // Reset air state
                 inAir = false;
-                hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed);
                 fallSpeed = 0;
                 jumpingForSpecialAttack = false;
                 
@@ -215,7 +238,7 @@ public class Tikbalang extends Enemy {
                 }
                 
                 // Return to running state after special attack
-                newState(IDLE);
+                newState(RUNNING);
                 isDoingSpecialAttack = false;
             }
         }
@@ -230,6 +253,30 @@ public class Tikbalang extends Enemy {
             // Stronger knockback from special attack
             float knockbackDirection = player.getHitbox().x < hitbox.x ? -2 : 2;
             player.applyKnockback(knockbackDirection);
+        }
+    }
+    
+    @Override
+    protected void updateInAir(int[][] lvlData) {
+        if (CanMoveHere(hitbox.x, hitbox.y + fallSpeed, hitbox.width, hitbox.height, lvlData)) {
+            // Can move, continue falling
+            hitbox.y += fallSpeed;
+            fallSpeed += GRAVITY;
+        } else {
+            // Collision detected
+            
+            if (fallSpeed > 0) {
+                // We're falling and hit something below us
+                int maxTileY = (int)((hitbox.y + hitbox.height + fallSpeed) / Game.TILES_SIZE);
+                hitbox.y = maxTileY * Game.TILES_SIZE - hitbox.height - 20; // Add 1-pixel offset
+                inAir = false;
+                fallSpeed = 0;
+            } else {
+                // Hit ceiling
+                int minTileY = (int)(hitbox.y / Game.TILES_SIZE);
+                hitbox.y = minTileY * Game.TILES_SIZE + Game.TILES_SIZE;
+                fallSpeed = 0;
+            }
         }
     }
     
@@ -340,7 +387,7 @@ public class Tikbalang extends Enemy {
         g.drawRect((int)(attackBox.x - xLvlOffset), (int)attackBox.y, 
                   (int)attackBox.width, (int)attackBox.height);
         
-        if (isDoingSpecialAttack || enemyState == SPRCIAL_ATTACK) {
+        if (isDoingSpecialAttack || enemyState == SPECIAL_ATTACK) {
             g.setColor(Color.ORANGE);
             g.drawRect((int)(specialAttackBox.x - xLvlOffset), (int)specialAttackBox.y, 
                       (int)specialAttackBox.width, (int)specialAttackBox.height);

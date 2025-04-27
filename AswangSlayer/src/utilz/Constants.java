@@ -93,7 +93,7 @@ public class Constants {
 		public static final int ATTACK = 2;
 		public static final int HIT = 3;
 		public static final int DEAD = 4;
-		public static final int SPRCIAL_ATTACK = 5;
+		public static final int SPECIAL_ATTACK = 5;
 		
 		//size and pos for SIGBIN
 		public static final int WIDTH_DEFAULT = 256;
@@ -131,7 +131,7 @@ public class Constants {
 	                case DEAD: 
 	                case RUNNING: return 30;
 	                case ATTACK: return 32;
-	                case SPRCIAL_ATTACK: return 29;
+	                case SPECIAL_ATTACK: return 29;
 	            }
 			}
 			return 0;

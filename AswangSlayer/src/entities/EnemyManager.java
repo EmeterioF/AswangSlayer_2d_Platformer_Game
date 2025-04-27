@@ -96,7 +96,7 @@ public class EnemyManager {
                 sigbinArr[j][i] = temp.getSubimage(i * WIDTH_DEFAULT, j * HEIGHT_DEFAULT, WIDTH_DEFAULT, HEIGHT_DEFAULT);
         
         // Load Tikbalang sprites - Add this section
-        tikbalangArr = new BufferedImage[6][30]; // Note: 6 states including special attack
+        tikbalangArr = new BufferedImage[6][32]; // Note: 6 states including special attack
         BufferedImage bossTemp = LoadSave.GetSpriteAtlas(LoadSave.TIKBALANG_ATLAS);
         for (int j = 0; j < tikbalangArr.length; j++)
             for (int i = 0; i < tikbalangArr[j].length; i++)

@@ -134,7 +134,6 @@ public class Playing extends State implements StateMethods{
     public void draw(Graphics g) {
         // Draw background
         g.drawImage(mainBackground, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-
         // Draw parallax layers
         int levelWidth = levelManager.getCurrentLevel().getLvlData()[0].length * Game.TILES_SIZE;
         int parallax1Offset = (int) (xLvlOffset * 0.1);
@@ -158,6 +157,9 @@ public class Playing extends State implements StateMethods{
         } else if (lvlCompleted) {
             levelCompletedOverlay.draw(g);
         }
+        
+        //tile debug
+//        drawGrid(g, xLvlOffset);
     }
 	
 	
