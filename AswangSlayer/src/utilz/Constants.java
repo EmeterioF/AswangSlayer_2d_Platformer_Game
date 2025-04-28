@@ -102,7 +102,7 @@ public class Constants {
 		public static final int TIKBALANG_DEAD = 5;
 
 		//new states for DUWENDE
-		public static final int DUWENDE_DISAPPEAR = 6;
+		public static final int DUWENDE_DISAPPEAR = 5;
 		
 		//size and pos for SIGBIN
 		public static final int WIDTH_DEFAULT = 256;
