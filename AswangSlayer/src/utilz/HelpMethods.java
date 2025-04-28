@@ -1,12 +1,15 @@
 package utilz;
 
-import static utilz.Constants.EnemyConstants.SIGBIN;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import static utilz.Constants.EnemyConstants.TIKBALANG;
+import static utilz.Constants.EnemyConstants.SIGBIN;
+import static utilz.Constants.EnemyConstants.DUWENDE;
+
+import entities.Duwende;
 import entities.Sigbin;
 import entities.Tikbalang;
 import main.Game;
@@ -202,4 +205,16 @@ public class HelpMethods {
             }
         return list;
     }
+    
+    public static ArrayList<Duwende> GetDuwende(BufferedImage img) {
+	    ArrayList<Duwende> list = new ArrayList<>();
+	    for (int j = 0; j < img.getHeight(); j++)
+	        for (int i = 0; i < img.getWidth(); i++) {
+	            Color color = new Color(img.getRGB(i, j));
+	            int value = color.getGreen();
+	            if (value == DUWENDE)
+	                list.add(new Duwende(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+	        }
+	    return list;
+	}
 }

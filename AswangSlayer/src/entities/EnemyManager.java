@@ -15,9 +15,13 @@ public class EnemyManager {
 
     private Playing playing;
     private BufferedImage[][] sigbinArr;
-    private BufferedImage[][] tikbalangArr; // Add this line
+    private BufferedImage[][] tikbalangArr;
+    private BufferedImage[][] duwendeArr;
+    
     private ArrayList<Sigbin> sigbins = new ArrayList<>();
-    private ArrayList<Tikbalang> tikbalangs = new ArrayList<>(); // Add this line
+    private ArrayList<Tikbalang> tikbalangs = new ArrayList<>(); 
+    private ArrayList<Duwende> duwendes = new ArrayList<>(); 
+    
 
     public EnemyManager(Playing playing) {
         this.playing = playing;
@@ -27,7 +31,8 @@ public class EnemyManager {
     
     public void loadEnemies(Level level) {
         sigbins = level.getSigbins();
-        tikbalangs = level.getTikbalangs(); // Add this line
+        tikbalangs = level.getTikbalangs();
+        duwendes = level.getDuwendes(); // Add this line to load duwendes from level
     }
 
     public void update(int[][] lvlData, Player player) {
@@ -49,13 +54,22 @@ public class EnemyManager {
             }
         }
         
+        // Update duwende enemies
+        for (Duwende d : duwendes) {
+            if(d.isActive()) {
+                d.update(lvlData, player);
+                isAnyActive = true;
+            }
+        }
+        
         if(!isAnyActive)
             playing.setLevelCompleted(true);
     }
 
     public void draw(Graphics g, int xLvlOffset) {
         drawSigbins(g, xLvlOffset);
-        drawTikbalangs(g, xLvlOffset); // Add this line
+        drawTikbalangs(g, xLvlOffset);
+        drawDuwendes(g, xLvlOffset); // Add this line to draw duwendes
     }
 
     private void drawSigbins(Graphics g, int xLvlOffset) {
@@ -87,6 +101,21 @@ public class EnemyManager {
         }
     }
     
+    // Add method to draw duwendes
+    private void drawDuwendes(Graphics g, int xLvlOffset) {
+        for (Duwende d : duwendes) {
+            if(d.isActive() && !d.isInvisible()) { // Skip drawing if duwende is invisible
+                g.drawImage(duwendeArr[d.getEnemyState()][d.getAniIndex()], 
+                           (int) d.getHitbox().x - xLvlOffset - DUWENDE_DRAWOFFSET_X + d.flipX(),
+                           (int) d.getHitbox().y - DUWENDE_DRAWOFFSET_Y, 
+                           DUWENDE_WIDTH * d.flipW(), 
+                           DUWENDE_HEIGHT, null);
+                
+                 d.drawHitbox(g, xLvlOffset); // Uncomment for debugging
+            }
+        }
+    }
+    
     private void loadEnemyImgs() {
         // Load Sigbin sprites
         sigbinArr = new BufferedImage[5][30];
@@ -101,6 +130,13 @@ public class EnemyManager {
         for (int j = 0; j < tikbalangArr.length; j++)
             for (int i = 0; i < tikbalangArr[j].length; i++)
                 tikbalangArr[j][i] = bossTemp.getSubimage(i * WIDTH_DEFAULT, j * HEIGHT_DEFAULT, WIDTH_DEFAULT, HEIGHT_DEFAULT);
+        
+        // Load Duwende sprites
+        duwendeArr = new BufferedImage[6][32]; // 6 rows and 32 columns as per your atlas
+        BufferedImage duwendeTemp = LoadSave.GetSpriteAtlas(LoadSave.DUWENDE_ATLAS);
+        for (int j = 0; j < duwendeArr.length; j++)
+            for (int i = 0; i < duwendeArr[j].length; i++)
+                duwendeArr[j][i] = duwendeTemp.getSubimage(i * WIDTH_DEFAULT, j * HEIGHT_DEFAULT, WIDTH_DEFAULT, HEIGHT_DEFAULT);
     }
     
     public void checkPlayerHit(Player player) {
@@ -130,6 +166,18 @@ public class EnemyManager {
                 }
             }
         }
+        
+        // Check Duwende enemies - Only check if not invisible
+        for (Duwende d : duwendes) {
+            if (d.isActive() && !d.isInvisible()) {
+                if (d.getHitbox().intersects(player.getHitbox())) {
+                    player.changeHealth(-GetEnemyDmg(DUWENDE));
+                    float knockbackDirection = player.getHitbox().x < d.getHitbox().x ? -0.7f : 0.7f;
+                    player.applyKnockback(knockbackDirection);
+                    return;
+                }
+            }
+        }
     }
     
     public void checkEnemyHit(Rectangle2D.Float attackBox, int damage) {
@@ -148,6 +196,14 @@ public class EnemyManager {
                 return;
             }
         }
+        
+        // Check Duwende enemies - Cannot hit if invisible
+        for (Duwende d : duwendes) {
+            if (d.isActive() && !d.isInvisible() && attackBox.intersects(d.getHitbox())) {
+                d.hurt(damage);
+                return;
+            }
+        }
     }
     
     public void resetAllEnemies() {
@@ -157,5 +213,9 @@ public class EnemyManager {
         // Reset Tikbalang enemies - Add this section
         for (Tikbalang t : tikbalangs)
             t.resetEnemy();
+            
+        // Reset Duwende enemies
+        for (Duwende d : duwendes)
+            d.resetEnemy();
     }
 }

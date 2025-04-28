@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import static utilz.HelpMethods.GetLevelData;
 import static utilz.HelpMethods.GetSigbin;
 import static utilz.HelpMethods.GetTikbalang;
+import static utilz.HelpMethods.GetDuwende;
+
+import entities.Duwende;
 import entities.Sigbin;
 import entities.Tikbalang;
 import main.Game;
@@ -14,6 +17,7 @@ public class Level {
 	private BufferedImage img;
 	private ArrayList<Sigbin> sigbins;
 	private ArrayList<Tikbalang> tikbalangs; // Add this line
+	private ArrayList<Duwende> duwendes;
 	private int [][] lvlData;
 	
 	private int lvlTilesWide;
@@ -37,6 +41,7 @@ public class Level {
 	private void createEnemies() {
 		sigbins = GetSigbin(img);
 		tikbalangs = GetTikbalang(img); // Add this line
+		duwendes = GetDuwende(img);
 	}
 
 	private void createLevelData() {
@@ -62,5 +67,9 @@ public class Level {
 	// Add this method
 	public ArrayList<Tikbalang> getTikbalangs(){
 		return tikbalangs;
+	}
+	
+	public ArrayList<Duwende> getDuwendes(){
+		return duwendes;
 	}
 }

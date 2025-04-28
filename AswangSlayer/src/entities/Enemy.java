@@ -104,7 +104,7 @@ public abstract class Enemy extends Entity {
     
     protected boolean isPlayerInRange(Player player) {
         int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
-        return absValue <= attackDistance * 7; // Greatly increased sight range
+        return absValue <= attackDistance * 40; // Greatly increased sight range
     }
 
     protected boolean isPlayerCloseForAttack(Player player) {

@@ -86,6 +86,7 @@ public class Constants {
 		// this values will be used as the color of the green 
 		public static final int SIGBIN = 16; 
 		public static final int TIKBALANG = 32;
+		public static final int DUWENDE = 48;
 		
 		// states for enemies
 		public static final int IDLE = 0;
@@ -94,12 +95,14 @@ public class Constants {
 		public static final int HIT = 3;
 		public static final int DEAD = 4;
 		
-		//states for Tikbalang 
+		//new states for Tikbalang 
 		
 		public static final int SPECIAL_ATTACK = 3;
 		public static final int TIKBALANG_HIT = 4;		
 		public static final int TIKBALANG_DEAD = 5;
-		
+
+		//new states for DUWENDE
+		public static final int DUWENDE_DISAPPEAR = 6;
 		
 		//size and pos for SIGBIN
 		public static final int WIDTH_DEFAULT = 256;
@@ -118,7 +121,14 @@ public class Constants {
 		public static final int TIKBALANG_DRAWOFFSET_X = (int) (180 * Game.SCALE);
 		public static final int TIKBALANG_DRAWOFFSET_Y = (int) (114 * Game.SCALE);  // sprite pos relative to hitbox + to move down - to move up
 		
-		
+		//size and pos for DUWENDE - smaller than Sigbin
+	    public static final int DUWENDE_WIDTH = (int) ((WIDTH_DEFAULT) * Game.SCALE);
+	    public static final int DUWENDE_HEIGHT = (int) ((HEIGHT_DEFAULT) * Game.SCALE);
+	    
+	    public static final int DUWENDE_DRAWOFFSET_X = (int) (120 * Game.SCALE);
+	    public static final int DUWENDE_DRAWOFFSET_Y = (int) (82 * Game.SCALE);
+	    
+	    
 		public static int GetSpriteAmount(int enemy_type, int enemy_state) {
 			
 			switch(enemy_type) {
@@ -139,6 +149,15 @@ public class Constants {
 	                case ATTACK: return 32;
 	                case SPECIAL_ATTACK: return 29;
 	            }
+			case DUWENDE:
+				switch(enemy_state) {
+				case IDLE : return 32;
+				case ATTACK: return 21;
+					case RUNNING : return 20;
+					case HIT: return 4;
+					case DEAD:
+					case DUWENDE_DISAPPEAR: return 3;
+				}
 			}
 			return 0;
 		}
@@ -147,6 +166,7 @@ public class Constants {
 				switch(enemy_type) {
 					case SIGBIN : return 50;
 					case TIKBALANG: return 300;
+					case DUWENDE: return 35;
 					default : return 1;
 				}
 		}
@@ -155,6 +175,7 @@ public class Constants {
 			switch(enemy_type) {
 				case SIGBIN: return 10;
 				case TIKBALANG: return 25; // Boss deals more damage
+				case DUWENDE: return 5;
 				default: return 1;
 			}
 	}
