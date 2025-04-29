@@ -10,12 +10,13 @@ import static utilz.Constants.EnemyConstants.SIGBIN;
 import static utilz.Constants.EnemyConstants.DUWENDE;
 
 import entities.Duwende;
+import entities.Enemy;
 import entities.Sigbin;
 import entities.Tikbalang;
 import main.Game;
 
 public class HelpMethods {
-
+	
     public static boolean CanMoveHere(float x, float y, float width, float height, int[][] lvlData) {
         // Check more points along the edges of the hitbox, not just the corners
         
@@ -217,4 +218,23 @@ public class HelpMethods {
 	        }
 	    return list;
 	}
+    
+    public static int scaleCalc(float scale, int enemyType ) {
+    	int scaler = 0;
+    	
+    	switch(enemyType) {
+    	case DUWENDE: 
+    		if(scale%0.25 ==0 && scale!= 1.75 && scale != 1.50) {
+    			scaler = 1;
+    		}
+    		return scaler;
+    	case SIGBIN:
+    		if(scale%0.25 ==0) {
+    			scaler = 1;
+    		}
+    	}
+    	return scaler;
+	}
+    
+
 }

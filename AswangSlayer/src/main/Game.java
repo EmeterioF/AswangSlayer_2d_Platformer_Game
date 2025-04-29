@@ -10,6 +10,7 @@ import gameStates.Menu;
 import gameStates.Playing;
 import ui.AudioOptions;
 import utilz.LoadSave;
+import static utilz.HelpMethods.scaleCalc;
 
 public class Game implements Runnable{
 	
@@ -28,11 +29,6 @@ public class Game implements Runnable{
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2.25f;
-	/* 1
-	 * 1.25
-	 * 2
-	 * 2.25
-	 */
 	
 	// game screen | player screen
 	public final static int TILES_IN_WIDTH = 26;

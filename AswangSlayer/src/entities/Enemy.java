@@ -163,4 +163,8 @@ public abstract class Enemy extends Entity {
     public int getEnemyState() {
         return enemyState;
     }
+    
+    public int getEnemyType() {
+    	return enemyType;
+    }
 }

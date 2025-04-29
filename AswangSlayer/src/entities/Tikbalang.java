@@ -50,14 +50,16 @@ public class Tikbalang extends Enemy {
     
     public Tikbalang(float x, float y) {
         // Use TIKBALNG constant from EnemyConstants
-        super(x, y -274, TIKBALANG_WIDTH, TIKBALANG_HEIGHT, TIKBALANG);
+        super(x, y - (121* Game.SCALE) - 1, TIKBALANG_WIDTH, TIKBALANG_HEIGHT, TIKBALANG);
         
         // Make hitbox smaller than sprite for better gameplay
         float hitboxWidth = TIKBALANG_WIDTH * 0.32f;
         float hitboxHeight = TIKBALANG_HEIGHT * 0.30f;
         float hitboxX = x + (TIKBALANG_WIDTH/2) - (hitboxWidth/2);
         
-        initHitbox(hitboxX, y -274 , (int)hitboxWidth, (int)hitboxHeight);
+//        import static utilz.HelpMethods.scaleCalc;
+        int scaler = (Game.SCALE == 2) ? 2 : 1;
+        initHitbox(hitboxX, y - (121* Game.SCALE) - scaler , (int)hitboxWidth, (int)hitboxHeight);
         
         // Initialize attack boxes
         initAttackBoxes();
@@ -598,6 +600,8 @@ public class Tikbalang extends Enemy {
             default: return "Unknown";
         }
     }
+    
+    
     
     // Reset boss to initial state
     public void resetEnemy() {
