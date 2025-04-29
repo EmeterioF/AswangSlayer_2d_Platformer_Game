@@ -96,7 +96,7 @@ public class EnemyManager {
                            TIKBALANG_WIDTH * t.flipW(), 
                            TIKBALANG_HEIGHT, null);
                 
-//                 t.drawHitbox(g, xLvlOffset); // Uncomment for debugging
+                 t.drawHitbox(g, xLvlOffset); // Uncomment for debugging
             }
         }
     }

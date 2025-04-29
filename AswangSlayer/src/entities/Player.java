@@ -699,12 +699,10 @@ public class Player extends Entity {
         return right;
     }
     
- // Add this method to your Player class
     public boolean isInvincible() {
         return invincible;
     }
 
-    // Add this method for knockback effect
     public void applyKnockback(float direction) {
         // Apply a horizontal knockback
         float knockbackStrength = 3.0f * Game.SCALE;

@@ -175,10 +175,10 @@ public class Game implements Runnable{
 	            AudioManager.playMusic("res/audio/menu_bg.wav");
 	            break;
 	        case PLAYING:
-	            AudioManager.playMusic("res/audio/normal_lvl_music.wav"); // Or whatever playing music you have
+	            AudioManager.playMusic("res/audio/normal_lvl_music.wav"); 
 	            break;
 	        case OPTIONS:
-	            AudioManager.playMusic("res/audio/menu_bg.wav"); // Or specific options music
+	            AudioManager.playMusic("res/audio/menu_bg.wav"); 
 	            break;
 	        case QUIT:
 	            // Stop all music when quitting
