@@ -1,11 +1,17 @@
-/lvls/
-/menu_background.png
-/options_background.png
+/audio/
+/button_atlas.png
+/death_background.png
+/duwende_atlas.png
 /entities/
 /gameStates/
 /inputs/
+/level_one_data_long.png
 /levels/
+/lvl_completed_background.png
+/lvls/
 /main/
+/menu_background.png
+/options_background.png
 /outside_sprites.png
 /parallax_main_bg.png
 /parallax_trees_1_bg.png
@@ -21,4 +27,3 @@
 /urm_buttons.png
 /utilz/
 /volume_buttons.png
-/audio/

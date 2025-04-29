@@ -90,7 +90,7 @@ public class GameOptions extends State implements StateMethods {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            game.changeGameState(Gamestate.MENU);
+            Game.changeGameState(Gamestate.MENU);
         }
     }
 

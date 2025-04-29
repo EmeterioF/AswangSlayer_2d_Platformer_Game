@@ -43,13 +43,13 @@ public class Duwende extends Enemy {
     
     public Duwende(float x, float y) {
         // Use the dimensions you defined in Constants.java
-        super(x, y-44, DUWENDE_WIDTH, DUWENDE_HEIGHT, DUWENDE);
+        super(x, y-(19 * Game.SCALE)-1, DUWENDE_WIDTH, DUWENDE_HEIGHT, DUWENDE);//(19* Game.SCALE)-1
         
         float hitboxWidth = DUWENDE_WIDTH * 0.10f;
         float hitboxHeight = DUWENDE_HEIGHT * 0.2f;
         float hitboxX = x + (DUWENDE_WIDTH/2) - (hitboxWidth/2);
         
-        initHitbox(hitboxX, y-44, (int)hitboxWidth, (int)hitboxHeight);
+        initHitbox(hitboxX, y-(19 * Game.SCALE)-1, (int)hitboxWidth, (int)hitboxHeight);
         
         initAttackBox();
     }

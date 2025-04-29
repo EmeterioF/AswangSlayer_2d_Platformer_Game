@@ -59,14 +59,14 @@ public class Player extends Entity {
     private int healthWidth = healthBarWidth;
     
     // ENERGY VARIABLES - Properly scaled for the UI
-    private int maxEnergy = 50;
+    private int maxEnergy = 100;
     private int currentEnergy = maxEnergy;
     private int energyBarWidth = (int) (120 * Game.SCALE); // Same base width as health bar
     private int energyWidth; // Calculated dynamically
     private int energyBarXStart = (int) (60 * Game.SCALE);
     private int energyBarYStart = (int) (51 * Game.SCALE);
     private int energyBarHeight = (int) (13 * Game.SCALE);
-    private int dashEnergyCost = 40;
+    private int dashEnergyCost = 20;
     // Use integer accumulation for smooth fractional energy regeneration
     private float energyAccumulator = 0f;
     private float energyRegenRate = 0.1f;

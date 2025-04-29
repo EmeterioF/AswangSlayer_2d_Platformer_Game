@@ -28,6 +28,11 @@ public class Game implements Runnable{
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2.25f;
+	/* 1
+	 * 1.25
+	 * 2
+	 * 2.25
+	 */
 	
 	// game screen | player screen
 	public final static int TILES_IN_WIDTH = 26;
@@ -56,7 +61,7 @@ public class Game implements Runnable{
     }
 
 	private void initClasses() {
-	    // Initialize AudioManager with default values (if needed)
+	    // Initialize AudioManager with default values
 	    AudioManager.setMusicVolume(0.5f); // 50% volume as default
 	    AudioManager.setSoundVolume(0.5f);
 	    
@@ -143,7 +148,6 @@ public class Game implements Runnable{
 				deltaF--;
 			}
 			
-			
 			if(System.currentTimeMillis() - lastCheck >= 1000) {
 				lastCheck = System.currentTimeMillis();
 				System.out.println("FPS: " + frames + " UPS " + updates);
@@ -151,7 +155,6 @@ public class Game implements Runnable{
 				updates = 0;
 			}
 		}
-		
 	}
 
 	public void windowFocusLost() {

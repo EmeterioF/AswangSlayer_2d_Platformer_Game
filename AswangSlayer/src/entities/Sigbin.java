@@ -34,13 +34,13 @@ public class Sigbin extends Enemy {
     
     public Sigbin(float x, float y) {
         // Same constructor as before
-        super(x, y - 73, SIGBIN_WIDTH, SIGBIN_HEIGHT, SIGBIN);
+        super(x, y - (32 * Game.SCALE)-1, SIGBIN_WIDTH, SIGBIN_HEIGHT, SIGBIN);
         
         float hitboxWidth = SIGBIN_WIDTH * 0.4f;
         float hitboxHeight = SIGBIN_HEIGHT * 0.25f;
         float hitboxX = x + (SIGBIN_WIDTH/2) - (hitboxWidth/2);
         
-        initHitbox(hitboxX, y - 73, (int)hitboxWidth, (int)hitboxHeight);
+        initHitbox(hitboxX, y - (32 * Game.SCALE)-1, (int)hitboxWidth, (int)hitboxHeight);
         
         initAttackBox();
     }
