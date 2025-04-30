@@ -23,7 +23,9 @@ public abstract class Enemy extends Entity {
     protected int currentHealth;
     protected boolean active = true;
     protected boolean attackChecked;
-    
+    protected static final int STATE_PATROLLING = 0;
+    protected static final int STATE_CHASING = 1;
+    protected static final int STATE_ATTACKING = 2;
     
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height);

@@ -11,11 +11,6 @@ import main.Game;
 
 public class Sigbin extends Enemy {
     
-    // State constants
-    private static final int STATE_PATROLLING = 0;
-    private static final int STATE_CHASING = 1;
-    private static final int STATE_ATTACKING = 2;
-    
     // Add a chase state tracking variable
     private int enemyBehaviorState = STATE_PATROLLING;
     private float chaseSpeed = 0.6f * Game.SCALE;

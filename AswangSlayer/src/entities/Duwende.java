@@ -14,9 +14,6 @@ import main.Game;
 public class Duwende extends Enemy {
     
     // State constants
-    private static final int STATE_PATROLLING = 0;
-    private static final int STATE_CHASING = 1;
-    private static final int STATE_ATTACKING = 2;
     private static final int STATE_HIDING = 3;
     
     // Add state tracking variable

@@ -14,9 +14,6 @@ import main.Game;
 public class Tikbalang extends Enemy {
     
     // State constants for boss behavior
-    private static final int STATE_PATROLLING = 0;
-    private static final int STATE_CHASING = 1;
-    private static final int STATE_ATTACKING = 2;
     private static final int STATE_SPECIAL_ATTACK = 3;
     
     // Track boss behavior
@@ -57,7 +54,6 @@ public class Tikbalang extends Enemy {
         float hitboxHeight = TIKBALANG_HEIGHT * 0.30f;
         float hitboxX = x + (TIKBALANG_WIDTH/2) - (hitboxWidth/2);
         
-//        import static utilz.HelpMethods.scaleCalc;
         int scaler = (Game.SCALE == 2) ? 2 : 1;
         initHitbox(hitboxX, y - (121* Game.SCALE) - scaler , (int)hitboxWidth, (int)hitboxHeight);
         

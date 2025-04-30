@@ -18,13 +18,13 @@ public abstract class Entity {
 		this.height = height;
 	}
 	
-	 public float getX() {
-	        return hitbox.x - (SIGBIN_WIDTH/2 - hitbox.width/2); 
-	    }
-	    
-	    public float getY() {
-	        return hitbox.y - SIGBIN_HEIGHT * 0.4f;
-	    }
+	public float getX() {
+        return hitbox.x;
+    }
+    
+    public float getY() {
+        return hitbox.y;
+    }
 	
 	protected void drawHitbox(Graphics g, int xLvlOffset) {
 		// For debugging the hitbox
@@ -35,7 +35,6 @@ public abstract class Entity {
 	protected void initHitbox(float x, float y, int width, int height) {
 		hitbox = new Rectangle2D.Float(x, y, width, height);
 	}
-	
 	
 	
 	public Rectangle2D.Float getHitbox() {
