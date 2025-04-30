@@ -41,7 +41,6 @@ public class Sigbin extends Enemy {
         float hitboxX = x + (SIGBIN_WIDTH/2) - (hitboxWidth/2);
         
         initHitbox(hitboxX, y - (32 * Game.SCALE)-scaleCalc(Game.SCALE, SIGBIN), (int)hitboxWidth, (int)hitboxHeight);
-        System.out.println("added Value:" + scaleCalc(Game.SCALE, SIGBIN));
         
         initAttackBox();
     }

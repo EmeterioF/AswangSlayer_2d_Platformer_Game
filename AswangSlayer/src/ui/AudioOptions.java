@@ -22,7 +22,6 @@ public class AudioOptions {
         createVolumeButton();
         
         // Initialize music and SFX buttons based on AudioManager states
-        // (You'll need to add getter methods in AudioManager for these)
         musicButton.setMuted(AudioManager.isMusicMuted());
         sfxButton.setMuted(AudioManager.isSoundMuted());
         

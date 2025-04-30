@@ -66,9 +66,9 @@ public class Player extends Entity {
     private int energyBarXStart = (int) (60 * Game.SCALE);
     private int energyBarYStart = (int) (51 * Game.SCALE);
     private int energyBarHeight = (int) (13 * Game.SCALE);
-    private int dashEnergyCost = 20;
+    private int dashEnergyCost = 40;
     // Use integer accumulation for smooth fractional energy regeneration
-    private float energyAccumulator = 0f;
+    private float energyAccumulator = 2f;
     private float energyRegenRate = 0.1f;
     
     // Hit Related Variables 

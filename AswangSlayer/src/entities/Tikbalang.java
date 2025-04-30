@@ -293,10 +293,10 @@ public class Tikbalang extends Enemy {
         // Calculate horizontal jump speed based on distance to player
         float distanceX = specialAttackTargetX - hitbox.x;
         float jumpDuration = 1.0f; // estimated seconds the jump will take
-        horizontalJumpSpeed = distanceX / (jumpDuration * 60); // 60 frames per second approx.
+        horizontalJumpSpeed = distanceX / (jumpDuration * 120); // 60 frames per second approx.
         
         // Cap the horizontal speed to a reasonable value
-        float maxHorizontalSpeed = 1.02f * Game.SCALE;
+        float maxHorizontalSpeed = 1.01f * Game.SCALE;
         if (Math.abs(horizontalJumpSpeed) > maxHorizontalSpeed) {
             horizontalJumpSpeed = Math.signum(horizontalJumpSpeed) * maxHorizontalSpeed;
         }
@@ -363,7 +363,7 @@ public class Tikbalang extends Enemy {
         // Coming down phase
         else {
             // Fall faster during special attack for dramatic effect
-            fallSpeed += GRAVITY * 1.5f;
+            fallSpeed += GRAVITY * 2f;
             
             // Try to move both horizontally and vertically
             float nextX = hitbox.x + horizontalJumpSpeed;
@@ -475,7 +475,7 @@ public class Tikbalang extends Enemy {
             bossBehaviorState = STATE_SPECIAL_ATTACK;
             
             // Occasionally use special attack when in range
-            if (Math.random() < 0.8) { // 1% chance per frame when in range
+            if (Math.random() < 0.1) { // 1% chance per frame when in range
                 startSpecialAttack(player);
             }
         }
