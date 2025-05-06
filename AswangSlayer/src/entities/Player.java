@@ -31,7 +31,7 @@ public class Player extends Entity {
     private float playerSpeed = 1.0f * Game.SCALE;
     private int[][] lvlData;
     
-    // Player Sprite offsets for rendering
+    // Sprite offsets for rendering
     private float xDrawOffset = 100 * Game.SCALE; 
     private float yDrawOffset = 27 * Game.SCALE;
     
@@ -121,7 +121,7 @@ public class Player extends Entity {
     }
     
     private void initAttackBox() {
-        attackBox = new Rectangle2D.Float(x, y, (int)(40* Game.SCALE), (int)(40* Game.SCALE));
+        attackBox = new Rectangle2D.Float(x, y, (int)(60* Game.SCALE), (int)(60* Game.SCALE));
     }
     
     // Main update method
@@ -129,7 +129,7 @@ public class Player extends Entity {
         // First check if player is dying or dead
         if (dying) {
             updateAnimationTick();
-            // When death animation completes, move to game over state
+            // When death animation copmpletes, move to game over state
             if (playerAction == DEATH && aniIndex >= GetSpriteAmount(DEATH) - 1 && aniTick >= aniSpeed - 1) {
                 playing.setGameOver(true);
                 dying = false;
@@ -394,8 +394,8 @@ public class Player extends Entity {
             );
         }
         
-        drawAttackBox(g, lvlOffset);
-        drawHitbox(g, lvlOffset);
+//        drawAttackBox(g, lvlOffset);
+//        drawHitbox(g, lvlOffset);
         drawUI(g);
     }
     
@@ -420,7 +420,7 @@ public class Player extends Entity {
     // Utility methods
     private void updateAttackBox() {
         if (right) {
-            attackBox.x = hitbox.x + hitbox.width + (int)(Game.SCALE * 5);   
+            attackBox.x = hitbox.x + hitbox.width + (int)(Game.SCALE * -20);   
         } else if (left) {
             attackBox.x = hitbox.x - hitbox.width - (int)(Game.SCALE * -20);
         }
