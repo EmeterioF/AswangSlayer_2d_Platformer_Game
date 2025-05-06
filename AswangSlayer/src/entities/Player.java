@@ -121,7 +121,7 @@ public class Player extends Entity {
     }
     
     private void initAttackBox() {
-        attackBox = new Rectangle2D.Float(x, y, (int)(40* Game.SCALE), (int)(40* Game.SCALE));
+        attackBox = new Rectangle2D.Float(x, y, (int)(60* Game.SCALE), (int)(60* Game.SCALE)); 
     }
     
     // Main update method
@@ -394,8 +394,8 @@ public class Player extends Entity {
             );
         }
         
-//        drawAttackBox(g, lvlOffset);
-//        drawHitbox(g, lvlOffset);
+       drawAttackBox(g, lvlOffset);
+        drawHitbox(g, lvlOffset);
         drawUI(g);
     }
     
@@ -420,7 +420,7 @@ public class Player extends Entity {
     // Utility methods
     private void updateAttackBox() {
         if (right) {
-            attackBox.x = hitbox.x + hitbox.width + (int)(Game.SCALE * 5);   
+            attackBox.x = hitbox.x + hitbox.width + (int)(Game.SCALE * -20);   
         } else if (left) {
             attackBox.x = hitbox.x - hitbox.width - (int)(Game.SCALE * -20);
         }
