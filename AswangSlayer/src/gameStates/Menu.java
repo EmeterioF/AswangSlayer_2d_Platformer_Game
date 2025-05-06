@@ -15,7 +15,7 @@ public class Menu extends State implements StateMethods {
 	private MenuButton[] buttons = new MenuButton[3];
 	private BufferedImage backgroundImg;
 	private int menuX, menuY, menuWidth, menuHeight;
-	private int buttonOffset = (int) (252 * Game.SCALE); // space of the button change this variable XD
+	private int buttonOffset = (int) (252 * Game.SCALE); 
 	public Menu(Game game) {
 		super(game);
 		loadButtons();
@@ -24,15 +24,15 @@ public class Menu extends State implements StateMethods {
 		AudioManager.playMusic("res/audio/menu_bg.wav");
 	}
 
-	private void loadBackground() {
+	private void loadBackground() { 
 		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND);
 		menuWidth = (int)(backgroundImg.getWidth() * Game.SCALE);
 		menuHeight = (int)(backgroundImg.getHeight() * Game.SCALE);
-		menuX = 0; // Game.GAME_WIDTH/2 - menuWidth/2; if you want it center
-		menuY = 0; // depends on you
+		menuX = 0; 
+		menuY = 0; 
 	}
 
-	private void loadButtons() {	// for x axis					// change this y axis
+	private void loadButtons() {	// for x axis					// change this y axis    // the row in sprite
 		buttons[0] = new MenuButton(Game.GAME_WIDTH - buttonOffset, (int) (130 * Game.SCALE), 0, Gamestate.PLAYING);
 		buttons[1] = new MenuButton(Game.GAME_WIDTH - buttonOffset, (int) (195  * Game.SCALE), 1, Gamestate.OPTIONS);
 		buttons[2] = new MenuButton(Game.GAME_WIDTH - buttonOffset, (int) (260  * Game.SCALE), 2, Gamestate.QUIT);
@@ -105,24 +105,15 @@ public class Menu extends State implements StateMethods {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-//		if(e.getKeyCode() == KeyEvent.VK_Escape) {
-//			Gamestate.state = Gamestate.MENU;
-//			System.out.println("MENU");
-//		}
-//		
+	
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			Gamestate.state = Gamestate.PLAYING;
 			System.out.println("PLAYING");
 		}
 		
-		
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
+	public void keyReleased(KeyEvent e) {}
 	
-	
-
 }

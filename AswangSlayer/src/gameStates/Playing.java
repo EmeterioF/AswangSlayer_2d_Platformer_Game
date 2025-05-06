@@ -39,7 +39,7 @@ public class Playing extends State implements StateMethods{
 	private boolean playerDying = false;
 
 	
-	private BufferedImage mainBackground, parallax_1, parallax_2, parallax_3;
+	private BufferedImage mainBackground, parallax_1, parallax_2, parallax_3; // background images
 	
 	public Playing(Game game) {
 		super(game);

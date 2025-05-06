@@ -235,6 +235,5 @@ public class HelpMethods {
     	}
     	return scaler;
 	}
-    
 
 }

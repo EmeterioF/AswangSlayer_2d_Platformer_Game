@@ -31,7 +31,7 @@ public class Player extends Entity {
     private float playerSpeed = 1.0f * Game.SCALE;
     private int[][] lvlData;
     
-    // Sprite offsets for rendering
+    // Player Sprite offsets for rendering
     private float xDrawOffset = 100 * Game.SCALE; 
     private float yDrawOffset = 27 * Game.SCALE;
     
@@ -394,8 +394,8 @@ public class Player extends Entity {
             );
         }
         
-//        drawAttackBox(g, lvlOffset);
-//        drawHitbox(g, lvlOffset);
+        drawAttackBox(g, lvlOffset);
+        drawHitbox(g, lvlOffset);
         drawUI(g);
     }
     

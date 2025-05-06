@@ -12,7 +12,7 @@ import static utilz.Constants.UI.Buttons.*;
 
 public class MenuButton {
 	private int xPos, yPos, rowIndex, index;
-	private int xOffsetCenter = B_WIDTH / 2;
+	private int xOffsetCenter = B_WIDTH / 2; // button center
 	private Gamestate state;
 	private BufferedImage[] imgs;
 	private boolean mouseOver, mousePressed;
@@ -27,9 +27,8 @@ public class MenuButton {
 		initBounds();
 	}
 
-	private void initBounds() {
+	private void initBounds() { // initializing the hitbox for the buttons
 		bounds = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
-
 	}
 
 	private void loadImgs() {

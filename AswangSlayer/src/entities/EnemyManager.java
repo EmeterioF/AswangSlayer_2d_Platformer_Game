@@ -81,7 +81,7 @@ public class EnemyManager {
                            SIGBIN_WIDTH * c.flipW(), 
                            SIGBIN_HEIGHT, null);
                 
-                 c.drawHitbox(g, xLvlOffset); // Uncomment for debugging
+//                 c.drawHitbox(g, xLvlOffset); // Uncomment for debugging
             }
         }
     }
@@ -96,7 +96,7 @@ public class EnemyManager {
                            TIKBALANG_WIDTH * t.flipW(), 
                            TIKBALANG_HEIGHT, null);
                 
-                 t.drawHitbox(g, xLvlOffset); // Uncomment for debugging
+//                 t.drawHitbox(g, xLvlOffset); // Uncomment for debugging
             }
         }
     }

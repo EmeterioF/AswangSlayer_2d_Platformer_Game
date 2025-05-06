@@ -9,8 +9,7 @@ import gameStates.Gamestate;
 import gameStates.Menu;
 import gameStates.Playing;
 import ui.AudioOptions;
-import utilz.LoadSave;
-import static utilz.HelpMethods.scaleCalc;
+
 
 public class Game implements Runnable{
 	
@@ -28,7 +27,7 @@ public class Game implements Runnable{
 	private AudioPlayer audioPlayer;
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
-	public final static float SCALE = 1.00f;
+	public final static float SCALE = 2.25f;
 	
 	// game screen | player screen
 	public final static int TILES_IN_WIDTH = 26;
@@ -110,7 +109,7 @@ public class Game implements Runnable{
 		
 	}
 	
-	// this is where the game loop is 
+	// this is where the game loop is []
 	@Override
 	public void run() {
 		
