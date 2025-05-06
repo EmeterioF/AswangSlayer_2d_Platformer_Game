@@ -108,8 +108,8 @@ public class HelpMethods {
     
     public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
         if (airSpeed > 0) {
-            // SIMPLE FIX: Always use the tile we're currently in + 4
-            // This ensures we never jump up a tile
+            // SIMPLE FIX: Always use the tile we're currently in + 4 for the bug of hitbox. Damn this one made me lose sleep for 2 days
+           
             int currentTile = (int)(hitbox.y / Game.TILES_SIZE) + 4;
             
             // Calculate the correct position relative to this tile
@@ -146,7 +146,7 @@ public class HelpMethods {
         }
     }
     
-    // Added from reference - checks if all tiles in a horizontal range are walkable
+   
     public static boolean IsAllTilesWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
         for (int i = 0; i < xEnd - xStart; i++) {
             if (IsTileSolid(xStart + i, y, lvlData))

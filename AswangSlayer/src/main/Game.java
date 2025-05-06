@@ -28,7 +28,7 @@ public class Game implements Runnable{
 	private AudioPlayer audioPlayer;
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
-	public final static float SCALE = 2.00f;
+	public final static float SCALE = 1.00f;
 	
 	// game screen | player screen
 	public final static int TILES_IN_WIDTH = 26;
@@ -72,7 +72,7 @@ public class Game implements Runnable{
 		gameThread.start();
 	}
 	
-	public void render(Graphics g) {
+	public void render(Graphics g) { // drawing of each states
 		
 		switch(Gamestate.state) {
 		case MENU:
@@ -86,7 +86,6 @@ public class Game implements Runnable{
 			break;
 		default:
 			break;
-		
 		}
 	}
 	
@@ -159,7 +158,7 @@ public class Game implements Runnable{
 		}
 	}
 	
-	public static void changeGameState(Gamestate newState) {
+	public static void changeGameState(Gamestate newState) { // method for music in states
 		 // Stop any existing music BEFORE changing state
 	    if (Gamestate.state == Gamestate.PLAYING && newState != Gamestate.PLAYING) {
 	        // We're leaving the playing state - stop the game/level music
