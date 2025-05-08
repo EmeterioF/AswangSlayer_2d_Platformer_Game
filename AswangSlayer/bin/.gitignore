@@ -1,7 +1,9 @@
-/audio/
-/main/
 /entities/
 /gameStates/
+/inputs/
 /levels/
+/main/
 /ui/
 /utilz/
+/lvls/
+/defeat_instructions.png

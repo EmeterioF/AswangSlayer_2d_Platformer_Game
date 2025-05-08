@@ -702,6 +702,7 @@ public class Player extends Entity {
     public boolean isInvincible() {
         return invincible;
     }
+    
 
     public void applyKnockback(float direction) {
         // Apply a horizontal knockback

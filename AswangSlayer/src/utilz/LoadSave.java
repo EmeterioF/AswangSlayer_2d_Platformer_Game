@@ -46,6 +46,14 @@ public class LoadSave {
 	public static final String VOLUME_BUTTONS = "volume_buttons.png";
 	public static final String STATUS_BAR = "status_bar.png";
 	
+	//INSTRUCTIONS overlay
+	public static final String INSTRUCTION_LEFT = "press_a.png";
+	public static final String INSTRUCTION_RIGHT = "press_d.png";
+	public static final String INSTRUCTION_JUMP = "press_space.png";
+	public static final String INSTRUCTION_DASH = "press_shift.png";
+	public static final String INSTRUCTION_ATTACK = "click.png";
+	public static final String INSTRUCTION_DEFEAT = "defeat_instructions.png";
+
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;

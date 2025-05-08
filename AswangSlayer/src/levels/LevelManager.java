@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gameStates.Gamestate;
+import gameStates.Playing;
 import main.Game;
 import utilz.LoadSave;
 
@@ -13,17 +14,20 @@ public class LevelManager {
 	private Game game;
 	private BufferedImage[] levelSprite;
 	private ArrayList<Level>levels;
+	private Playing playing;
 	private int lvlIndex = 0;
-
+	BufferedImage ins_left, ins_right, ins_jump, ins_dash, ins_attack, ins_defeat;
 	public LevelManager(Game game) {
 		this.game = game;
 		importOutsideSprites();
 		levels = new ArrayList<>();
 		buildAllLevels();
+		
 	}
 	
 	public void loadNextLevel(){
 		lvlIndex++;
+		
 		if(lvlIndex	>= levels.size()) {
 			lvlIndex = 0;
 			System.out.println("YOU COMPLETED THE GAME! TITLE ACHIEVED: ASWANG SLAYER. THE GAME IS NOW  COMPLETED");
@@ -54,17 +58,56 @@ public class LevelManager {
 	}
 
 	public void draw(Graphics g, int lvlOffset) {
-		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++)
-			for (int i = 0; i < levels.get(lvlIndex).getLvlData()[0].length; i++) {
-				int index = levels.get(lvlIndex).getSpriteIndex(i, j);
-				g.drawImage(levelSprite[index], Game.TILES_SIZE * i - lvlOffset, Game.TILES_SIZE * j, Game.TILES_SIZE , Game.TILES_SIZE, null);
-			}
+	    // Draw the current level's tiles
+	    for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
+	        for (int i = 0; i < levels.get(lvlIndex).getLvlData()[0].length; i++) {
+	            int index = levels.get(lvlIndex).getSpriteIndex(i, j);
+	            g.drawImage(levelSprite[index], Game.TILES_SIZE * i - lvlOffset, Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
+	        }
+	    }
+
+	    // Only draw instructions for the first level
+	    if (lvlIndex == 0) {
+	        initDrawInstructionsOverlay();
+	        drawInstructionsOverlay(g, lvlOffset); // Pass the camera offset
+	    }
 	}
 
 	public void update() {
 
 	}
+	
+	public void initDrawInstructionsOverlay() {
+		ins_left = LoadSave.GetSpriteAtlas(LoadSave.INSTRUCTION_LEFT);
+		ins_right = LoadSave.GetSpriteAtlas(LoadSave.INSTRUCTION_RIGHT);
+		ins_jump = LoadSave.GetSpriteAtlas(LoadSave.INSTRUCTION_JUMP);
+		ins_dash = LoadSave.GetSpriteAtlas(LoadSave.INSTRUCTION_DASH);
+		ins_attack = LoadSave.GetSpriteAtlas(LoadSave.INSTRUCTION_ATTACK);
+		ins_defeat = LoadSave.GetSpriteAtlas(LoadSave.INSTRUCTION_DEFEAT);
+	}
+	
+	public void drawInstructionsOverlay(Graphics g, int lvlOffset) {
+	    // Adjust positions with lvlOffset for camera movement
+	    int y = (int)(150 * Game.SCALE); // Static Y position
+	    int left_x = (int) (20 * Game.SCALE) - lvlOffset; // Adjusted X with lvlOffset
+	    int right_x = (int) (120 * Game.SCALE) - lvlOffset;
+	    int jumpz_x = (int) (240 * Game.SCALE) - lvlOffset;
+	    int attackz_x = (int) (360 * Game.SCALE) - lvlOffset;
+	    int dash_x = (int) (540 * Game.SCALE) - lvlOffset;
+	    int defeat_x = (int) (20 * Game.SCALE) - lvlOffset;
+	    int width = (int) (242 * Game.SCALE); // Width of the images
+	    int height = (int) (18 * Game.SCALE); // Height of the images
 
+	    // Draw the instruction images at their adjusted positions
+	    g.drawImage(ins_left, left_x, y + 100, width, height, null);
+	    g.drawImage(ins_right, right_x + 200, y + 100, width, height, null);
+	    g.drawImage(ins_jump, jumpz_x + 700, y + 100, width, height, null);
+	    g.drawImage(ins_dash, dash_x + 2500, y + 100, width, height, null);
+	    g.drawImage(ins_attack, attackz_x+ 1200, y+ 100, (int)(350 * Game.SCALE), (int)(30 * Game.SCALE), null);
+	    g.drawImage(ins_defeat, defeat_x+ 3800, y+ 100, (int)(350 * Game.SCALE), (int)(30 * Game.SCALE), null);
+	}
+	
+	
 	public Level getCurrentLevel() {
 		return levels.get(lvlIndex);
 	}
