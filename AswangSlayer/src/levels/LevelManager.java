@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gameStates.Gamestate;
-import gameStates.Playing;
 import main.Game;
 import utilz.LoadSave;
 
@@ -14,7 +13,7 @@ public class LevelManager {
 	private Game game;
 	private BufferedImage[] levelSprite;
 	private ArrayList<Level>levels;
-	private Playing playing;
+	
 	private int lvlIndex = 0;
 	BufferedImage ins_left, ins_right, ins_jump, ins_dash, ins_attack, ins_defeat;
 	public LevelManager(Game game) {
@@ -110,6 +109,10 @@ public class LevelManager {
 	
 	public Level getCurrentLevel() {
 		return levels.get(lvlIndex);
+	}
+	
+	public int getLvl() {
+		return lvlIndex;
 	}
 	
 	public int getAmountOfLevels() {
