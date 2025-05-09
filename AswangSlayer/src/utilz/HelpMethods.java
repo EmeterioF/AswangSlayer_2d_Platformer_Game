@@ -13,9 +13,12 @@ import entities.Duwende;
 import entities.Enemy;
 import entities.Sigbin;
 import entities.Tikbalang;
+import levels.LevelManager;
 import main.Game;
 
 public class HelpMethods {
+	
+
 	
     public static boolean CanMoveHere(float x, float y, float width, float height, int[][] lvlData) {
         // Check more points along the edges of the hitbox, not just the corners

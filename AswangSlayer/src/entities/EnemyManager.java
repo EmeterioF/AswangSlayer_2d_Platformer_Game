@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import gameStates.Playing;
 import levels.Level;
+import levels.LevelManager;
 import main.Game;
 import utilz.LoadSave;
 import static utilz.Constants.EnemyConstants.*;
@@ -35,7 +36,7 @@ public class EnemyManager {
         duwendes = level.getDuwendes(); // Add this line to load duwendes from level
     }
 
-    public void update(int[][] lvlData, Player player) {
+    public void update(int[][] lvlData, Player player, LevelManager levelManager) {
         boolean isAnyActive = false;
         
         // Update regular enemies
@@ -49,7 +50,7 @@ public class EnemyManager {
         // Update boss enemies
         for (Tikbalang t : tikbalangs) {
             if(t.isActive()) {
-                t.update(lvlData, player);
+                t.update(lvlData, player, levelManager );
                 isAnyActive = true;
             }
         }

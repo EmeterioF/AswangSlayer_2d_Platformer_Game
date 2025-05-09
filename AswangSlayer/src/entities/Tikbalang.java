@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 
 import audio.AudioManager;
+import levels.LevelManager;
 import main.Game;
 
 public class Tikbalang extends Enemy {
@@ -76,15 +77,35 @@ public class Tikbalang extends Enemy {
         specialAttackBox = new Rectangle2D.Float(x, y, (int)(200 * Game.SCALE), (int)(50 * Game.SCALE));
     }
     
-    public void update(int[][] lvlData, Player player) {
+    public void update(int[][] lvlData, Player player, LevelManager levelManager) {
         // First update behavior based on environment
         updateBehavior(lvlData, player);
+        
+        updateStrengthBasedOnLevel(levelManager, player);
         
         // Then handle animation ticks
         updateAnimationTick();
         
         // Update attack box positions
         updateAttackBoxes();
+    }
+    
+    private void updateStrengthBasedOnLevel(LevelManager levelManager, Player player) {
+    	int level = levelManager.getLvl();
+    	if(level == 4) {
+    		this.maxHealth = 400;
+    		jumpHeight = -6.0f * Game.SCALE;
+    		if(this.currentHealth < 5) {
+    			startSpecialAttack(player);
+    		}
+    	}
+    	
+    	resetStrength();
+    }
+    
+    private void resetStrength() {
+    	jumpHeight = -4.0f * Game.SCALE;
+    	this.maxHealth = 200;
     }
     
     private void updateAttackBoxes() {

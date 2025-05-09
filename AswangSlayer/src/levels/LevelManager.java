@@ -88,22 +88,24 @@ public class LevelManager {
 	public void drawInstructionsOverlay(Graphics g, int lvlOffset) {
 	    // Adjust positions with lvlOffset for camera movement
 	    int y = (int)(150 * Game.SCALE); // Static Y position
+	    
 	    int left_x = (int) (20 * Game.SCALE) - lvlOffset; // Adjusted X with lvlOffset
-	    int right_x = (int) (120 * Game.SCALE) - lvlOffset;
-	    int jumpz_x = (int) (240 * Game.SCALE) - lvlOffset;
-	    int attackz_x = (int) (360 * Game.SCALE) - lvlOffset;
-	    int dash_x = (int) (540 * Game.SCALE) - lvlOffset;
-	    int defeat_x = (int) (20 * Game.SCALE) - lvlOffset;
+	    int right_x = (int) (400 * Game.SCALE) - lvlOffset;
+	    int jumpz_x = (int) (1000 * Game.SCALE) - lvlOffset;
+	    int attackz_x = (int) (1500 * Game.SCALE) - lvlOffset;
+	    int dash_x = (int) (3200 * Game.SCALE) - lvlOffset;
+	    int defeat_x = (int) (3600 * Game.SCALE) - lvlOffset;
+	    
 	    int width = (int) (242 * Game.SCALE); // Width of the images
 	    int height = (int) (18 * Game.SCALE); // Height of the images
 
 	    // Draw the instruction images at their adjusted positions
-	    g.drawImage(ins_left, left_x, y + 100, width, height, null);
-	    g.drawImage(ins_right, right_x + 200, y + 100, width, height, null);
-	    g.drawImage(ins_jump, jumpz_x + 700, y + 100, width, height, null);
-	    g.drawImage(ins_dash, dash_x + 2500, y + 100, width, height, null);
-	    g.drawImage(ins_attack, attackz_x+ 1200, y+ 100, (int)(350 * Game.SCALE), (int)(30 * Game.SCALE), null);
-	    g.drawImage(ins_defeat, defeat_x+ 3800, y+ 100, (int)(350 * Game.SCALE), (int)(30 * Game.SCALE), null);
+	    g.drawImage(ins_left, left_x, y, width, height, null);
+	    g.drawImage(ins_right, right_x , y , width, height, null);
+	    g.drawImage(ins_jump, jumpz_x , y , width, height, null);
+	    g.drawImage(ins_dash, dash_x , y , width, height, null);
+	    g.drawImage(ins_attack, attackz_x, (int)( y * 1.5), (int)(350 * Game.SCALE), (int)(30 * Game.SCALE), null);
+	    g.drawImage(ins_defeat, defeat_x, (int) (y * 1.5), (int)(350 * Game.SCALE), (int)(30 * Game.SCALE), null);
 	}
 	
 	
