@@ -46,7 +46,8 @@ public class Sigbin extends Enemy {
         attackBox = new Rectangle2D.Float(x,y,(int)(120* Game.SCALE),(int)(70* Game.SCALE));
         attackBoxOffsetX = (int)(Game.SCALE * 30);
     }
-
+    
+    
     public void update(int[][] lvlData, Player player) {
         // First update behavior based on environment
         updateBehavior(lvlData, player);

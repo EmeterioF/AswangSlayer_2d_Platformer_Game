@@ -31,8 +31,8 @@ public class Duwende extends Enemy {
     // Special ability: disappear/hide
     private boolean isInvisible = false;
     private long lastDisappearTime = 0;
-    private int disappearCooldown = 2000; // 5 seconds cooldown
-    private int invisibilityDuration = 2000; // 3 seconds duration
+    private int disappearCooldown = 2000; // 2 seconds cooldown
+    private int invisibilityDuration = 2000; // 2 seconds duration
     private float alphaValue = 1.0f; // For transparency effects
     
     // attack hitbox
@@ -304,7 +304,7 @@ public class Duwende extends Enemy {
         
         // Show state text and animation info for debugging
         g.setColor(Color.WHITE);
-        String stateText = getStateText();
+        String stateText = getStateText();	
         g.drawString(stateText, (int)hitbox.x - xLvlOffset - 10, (int)hitbox.y - 20);
         
         // Show animation info

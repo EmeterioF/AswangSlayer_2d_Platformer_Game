@@ -61,7 +61,7 @@ public class Player extends Entity {
     // ENERGY VARIABLES - Properly scaled for the UI
     private int maxEnergy = 100;
     private int currentEnergy = maxEnergy;
-    private int energyBarWidth = (int) (120 * Game.SCALE); // Same base width as health bar
+    private int energyBarWidth = (int) (120 * Game.SCALE); 
     private int energyWidth; // Calculated dynamically
     private int energyBarXStart = (int) (60 * Game.SCALE);
     private int energyBarYStart = (int) (51 * Game.SCALE);
@@ -135,6 +135,17 @@ public class Player extends Entity {
                 dying = false;
             }
             return; // Skip other updates while dying
+        }
+        
+        //DIE WHEN FALL IN THE BORDER OF THE SCREEN
+        if (hitbox.y + hitbox.height > Game.GAME_HEIGHT - 2) {
+        	dying = true;
+            hit = false;  // Cancel hit animation if dying
+            playerAction = DEATH;
+            resetAniTick();
+            playing.setPlayerDying(true);
+            
+            AudioManager.playSFX("res/audio/death.wav");
         }
         
         // Update hit state
@@ -316,9 +327,10 @@ public class Player extends Entity {
         moving = true;
     }
     
+    
     // Animation methods
     private void updateAnimationTick() {
-        aniTick++;
+    	aniTick++;
         if (aniTick >= aniSpeed) {
             aniTick = 0;
             aniIndex++;
@@ -395,7 +407,7 @@ public class Player extends Entity {
         }
         
 //        drawAttackBox(g, lvlOffset);
-//        drawHitbox(g, lvlOffset);
+        drawHitbox(g, lvlOffset);
         drawUI(g);
     }
     
@@ -675,9 +687,13 @@ public class Player extends Entity {
     
     public void setJump(boolean jump) {
         this.jump = jump;
-    }
+    } 
     
-    public void resetPosition(){
+    public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public void resetPosition(){
     	// Reset player to starting position
         float x = 0; // Starting X
         float y = 0; // Starting Y - adjust if needed

@@ -33,7 +33,7 @@ public class EnemyManager {
     public void loadEnemies(Level level) {
         sigbins = level.getSigbins();
         tikbalangs = level.getTikbalangs();
-        duwendes = level.getDuwendes(); // Add this line to load duwendes from level
+        duwendes = level.getDuwendes(); 
     }
 
     public void update(int[][] lvlData, Player player, LevelManager levelManager) {
@@ -70,7 +70,7 @@ public class EnemyManager {
     public void draw(Graphics g, int xLvlOffset) {
         drawSigbins(g, xLvlOffset);
         drawTikbalangs(g, xLvlOffset);
-        drawDuwendes(g, xLvlOffset); // Add this line to draw duwendes
+        drawDuwendes(g, xLvlOffset); 
     }
 
     private void drawSigbins(Graphics g, int xLvlOffset) {
@@ -190,7 +190,7 @@ public class EnemyManager {
             }
         }
         
-        // Check Tikbalang enemies - Add this section
+        // Check Tikbalang enemies
         for (Tikbalang t : tikbalangs) {
             if (t.isActive() && attackBox.intersects(t.getHitbox())) {
                 t.hurt(damage / 2); // Boss takes less damage
@@ -211,7 +211,7 @@ public class EnemyManager {
         for (Sigbin s : sigbins)
             s.resetEnemy();
             
-        // Reset Tikbalang enemies - Add this section
+        // Reset Tikbalang enemies 
         for (Tikbalang t : tikbalangs)
             t.resetEnemy();
             
