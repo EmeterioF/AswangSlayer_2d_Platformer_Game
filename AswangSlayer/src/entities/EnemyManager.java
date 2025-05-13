@@ -98,6 +98,7 @@ public class EnemyManager {
                            TIKBALANG_HEIGHT, null);
                 
 //                 t.drawHitbox(g, xLvlOffset); // Uncomment for debugging
+            
             }
         }
     }
@@ -112,7 +113,7 @@ public class EnemyManager {
                            DUWENDE_WIDTH * d.flipW(), 
                            DUWENDE_HEIGHT, null);
                 
-                 d.drawHitbox(g, xLvlOffset); // Uncomment for debugging
+//                 d.drawHitbox(g, xLvlOffset); // Uncomment for debugging
             }
         }
     }

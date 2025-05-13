@@ -33,15 +33,13 @@ public class Tikbalang extends Enemy {
     // Timers
     private long lastDirectionChangeTime = 0;
     private long minDirectionChangeDelay = 500; // milliseconds
-    private int specialAttackCooldown = 6000; // 6 seconds cooldown
+    private int specialAttackCooldown = 4000; // 6 seconds cooldown
     private long lastSpecialAttackTime = 0;
     private boolean specialAttackAnimComplete = false;
     
     // Attack boxes
     private Rectangle2D.Float attackBox;
     private Rectangle2D.Float specialAttackBox;
-    private int attackBoxOffsetX;
-    private int specialAttackHitFrame = 10; // The animation frame when special attack hits
     
     //music
     private boolean playerSpotted = false;
@@ -90,22 +88,23 @@ public class Tikbalang extends Enemy {
         updateAttackBoxes();
     }
     
+
     private void updateStrengthBasedOnLevel(LevelManager levelManager, Player player) {
-    	int level = levelManager.getLvl();
-    	if(level == 4) {
-    		this.maxHealth = 400;
-    		jumpHeight = -6.0f * Game.SCALE;
-    		if(this.currentHealth < 5) {
-    			startSpecialAttack(player);
-    		}
-    	}
-    	
-    	resetStrength();
+        int level = levelManager.getLvl();
+        if (level == 3) {
+        	chaseSpeed = 1.2f;
+            jumpHeight = -5.0f * Game.SCALE;
+            if (currentHealth <=40) 
+            	specialAttackCooldown = 1100;
+            else if(currentHealth <= 100)
+            	chaseSpeed = 10;
+        }
     }
     
     private void resetStrength() {
+    	chaseSpeed = 0.8f;
     	jumpHeight = -4.0f * Game.SCALE;
-    	this.maxHealth = 200;
+    	specialAttackCooldown =  6000;
     }
     
     private void updateAttackBoxes() {
@@ -598,6 +597,8 @@ public class Tikbalang extends Enemy {
         g.drawString(healthText, (int)hitbox.x - xLvlOffset - 10, (int)hitbox.y - 55);
     }
     
+    
+    
     private Color getStateColor() {
         switch (bossBehaviorState) {
             case STATE_PATROLLING: return Color.BLUE;
@@ -618,10 +619,17 @@ public class Tikbalang extends Enemy {
         }
     }
     
+    public float getHitboxX() {
+    	return hitbox.x;
+    }
     
+    public float getHitboxY() {
+    	return hitbox.y;
+    }
     
     // Reset boss to initial state
     public void resetEnemy() {
+    	resetStrength();
         hitbox.x = x;
         hitbox.y = y;
         firstUpdate = true;

@@ -166,7 +166,7 @@ public class Constants {
 				switch(enemy_type) {
 					case SIGBIN : return 50;
 					case TIKBALANG: return 300;
-					case DUWENDE: return 15;
+					case DUWENDE: return 20;
 					default : return 1;
 				}
 		}
